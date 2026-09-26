@@ -203,7 +203,7 @@ class HomeBody(motor.Body):
 
     def _solve_clear(self, side, xyz, grasp=None):
         """IK to xyz, lifted 1 cm at a time until the arm is clear of the house. Pure - nothing is committed, so the
-        same answer serves move() and the look-ahead in _blockers(). status: ok / unreachable / in_way / blocked."""
+        same answer serves move() and any look-ahead. status: ok / unreachable / in_way / blocked."""
         q, dz, hits = None, 0.0, []
         for dz in RAISES:
             q2, err = reach.solve(self.m, np.asarray(xyz) + (0, 0, dz), side=side, base=self.base)
@@ -624,26 +624,6 @@ class HomeBody(motor.Body):
         need = max(abs(q[n] - self.arm_q[side].get(n, 0.0)) for n in q) / motor.ARM_SPEED
         self.arm_q[side] = q
         self.frames.append((max(seconds or 0.0, need, 0.3), self._pose(), event))
-
-    def _blockers(self, o, side, xyz):
-        """Other objects the hand would go through coming down onto o at xyz - above it, the way down, the grip
-        (checked on the body, nothing moved)."""
-        # exactly the two moves pick() makes - the approach (8 cm higher) and the grip - via the same solver as move()
-        down = self._solve_clear(side, xyz, grasp=o)
-        up = self._solve_clear(side, np.asarray(xyz) + (0, 0, 0.08), grasp=o)
-        q, above = down["q"], up["q"]
-        if q is None:
-            return []
-        hits = down["in_way"] + up["in_way"] + self._hits(side, q, grasp=o)
-        if above is not None:
-            hits += self._path_hits(side, above, q, grasp=o)
-        open_, self.grip[side] = self.grip[side], 0.8          # curling fingers sweep sideways into a neighbour
-        try:
-            hits += self._hits(side, q, grasp=o)
-        finally:
-            self.grip[side] = open_
-        return list(dict.fromkeys(h[1][4:].replace("_", " ") for h in hits
-                                  if h[1].startswith("obj_") and h[1][4:].replace("_", " ") in OBJECTS))
 
     def _holding(self, o):
         side = next((s for s, v in self.held.items() if v == o), None)
