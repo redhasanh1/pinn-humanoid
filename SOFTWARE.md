@@ -65,8 +65,15 @@ and you. It does the dishes, the laundry, fetches things, wipes counters, puts t
 wishes ("I'm hungry" → brings the apple). Every plan is checked on the body first (reach, joints, grip, catches).
 
 **50-command test** (`results/house.md`): built-in rules pass **47/50**. With the small AI model on the laptop GPU
-thinking up the rest, restricted to the robot's own skills and using its past tasks as examples, it's **49/50**.
-The one left, "I spilled something in the living room", needs common sense the laptop model doesn't have.
+thinking up the rest, restricted to the robot's own skills and using its past tasks as examples, it's **49/50** -
+including "I spilled something in the living room", once the counter cameras could see the stain.
+
+**Grasps are real** (branch `real-grasps`, `results/grasps.md`): the fingers close round the object, not the palm in
+the air (the old grasps closed 12-19 cm above every object). Round/tall things are wrapped from the side; flat things
+(plate, shirts, book, remote, sponge) are slid to the counter's edge with the knuckles and taken by the part sticking
+out - this hand can't pinch. Obstacles are moved aside, the base steps sideways, the other hand is used when it fits.
+**All 47 rule-planned tasks: done, with nothing touched by more than 2 mm** in a 50 Hz collision replay (capsule arms;
+the InMoov-mesh check is pending).
 
 ## See it and use it
 
