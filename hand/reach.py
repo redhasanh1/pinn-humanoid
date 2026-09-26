@@ -96,8 +96,19 @@ def solve_grasp(m, target, approach, side="right", base=None, closed=None, iters
             d.qpos[a] = seed_q.get(n, d.qpos[a])
     target, approach = np.asarray(target, float), np.asarray(approach, float) / np.linalg.norm(approach)
 
+    dof = [m.jnt_dofadr[j] for j in jid]
+    b_palm, b_wrist = m.body(palm(side)).id, m.body(wrist_flex(side)).id
+    b_tips = [m.body(side + t).id for t in TIPS]
+    jp = np.zeros((3, m.nv))
+
+    def jac(b):
+        mujoco.mj_jacBody(m, d, jp, None, b)
+        return jp[:, dof].copy()
+
     def resid():
-        mujoco.mj_forward(m, d)
+        # positions only: mj_forward also ran collision detection - 372 000 calls of it made a sponge pick take 36 s
+        mujoco.mj_kinematics(m, d)
+        mujoco.mj_comPos(m, d)
         g, h = grasp_frame(m, d, side)
         return np.concatenate([target - g, w * (approach - h)])
 
@@ -110,12 +121,16 @@ def solve_grasp(m, target, approach, side="right", base=None, closed=None, iters
         best, stall = (e, 0) if e < best - 1e-4 else (best, stall + 1)
         if stall > 12:                                     # stuck (joint limit / out of reach): stop early
             break
-        J = np.zeros((6, len(adr)))
+        # exact Jacobian from MuJoCo (was 6 finite-difference evaluations per step):
+        # grasp point g = (palm + mean tips) / 2;  axis h = v / |v|, v = palm - wrist, dh = (I - h h^T) dv / |v|
+        Jp, Jw = jac(b_palm), jac(b_wrist)
+        Jg = 0.5 * (Jp + np.mean([jac(b) for b in b_tips], axis=0))
+        v = d.xpos[b_palm] - d.xpos[b_wrist]
+        nv = np.linalg.norm(v) + 1e-9
+        hh = v / nv
+        Jh = (np.eye(3) - np.outer(hh, hh)) @ (Jp - Jw) / nv
+        J = np.vstack([Jg, w * Jh])                        # d(grasp point, w*axis)/dq; residual r = target - that
         q0 = d.qpos[adr].copy()
-        for k, a in enumerate(adr):
-            d.qpos[a] = q0[k] + 1e-4
-            J[:, k] = (r - resid()) / 1e-4                 # d(target - f)/dq = -df/dq, so dq = pinv(J) r
-            d.qpos[a] = q0[k]
         dq = J.T @ np.linalg.solve(J @ J.T + 0.02 ** 2 * np.eye(6), r)
         d.qpos[adr] = np.clip(q0 + np.clip(dq, -0.2, 0.2), lo, hi)
         r = resid()

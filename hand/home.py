@@ -66,6 +66,7 @@ FIST_H = 0.035                                 # m: grasp point of a fist above 
 COUNTER_EDGE = -0.19                           # room-local y of the counter top's front edge
 PRESHAPE = 0.6                                 # half-curled hand while reaching in (grip 0 = flat open)
 SIGMAS = 2.0                                   # margin around a seen object = this many camera sigmas
+GRASP_MEMORY = None                            # a grasp_memory.GraspMemory: try what worked for similar shapes first
 AUTO_CLEAR = True                              # move a blocking object aside before a grasp (tools/clutter.py ablates it)
 LOOK_H = 0.7                                   # counter camera height above the counter top
 
@@ -165,6 +166,7 @@ class HomeBody(motor.Body):
         self.grasp_dir = {}                   # object -> (approach, dz) it is held with
         self.grip_at = {}                     # object -> where to grasp it, if not its centre (a slid-out overhang)
         self.grasp_off = {}                   # held object -> (centre-to-grasp offset, base yaw when picked)
+        self._params = {}                     # approach vector -> (tilt, yaw) it was made from
         for s in ("right", "left"):
             self.arm_q[s][reach.wrist_flex(s)] = 0.0
 
@@ -413,6 +415,7 @@ class HomeBody(motor.Body):
         self.held[side], self.where[o] = o, ("held", side)
         self.set_grip(side, 0.8, ("attach", side, mocap_name(o)[4:]))
         self.grasp_dir[o] = (an, dz)                           # how it is held: placing it uses the same grasp
+        self._remember("grasp", o, an, dz)
         self.grasp_off[o] = (np.asarray(p) - self.pos[o], self.base[2])   # where on it the hand is (an overhang)
         self.grip_at.pop(o, None)
         lift = self._gsolve(side, p + (0, 0, dz + 0.10), an, loose=True)
@@ -432,30 +435,49 @@ class HomeBody(motor.Body):
         q = cache[key]
         return dict(q) if q is not None else None
 
-    def _approaches(self, side, p):
-        """Ways in, most natural first: from the shoulder towards the object, tipped 40-60 deg down, or turned 30 deg."""
+    TILTS, YAWS = (-0.3, 0.0, -0.6, -1.0), (0.0, 0.5, -0.5, 1.0, -1.0)
+
+    def _approach(self, side, p, tilt, yaw):
+        """A way in: from the shoulder towards the object, tipped down by tilt, turned by yaw (rad)."""
         sh = to_world(self.base, (0.2 if side == "left" else -0.2, 0.0))
         f = np.asarray(p[:2]) - sh
         f = f / (np.linalg.norm(f) + 1e-9)
-        out = []
-        for tilt in (-0.3, 0.0, -0.6, -1.0):                  # level-ish first: the hand wraps round from the side
-            for yaw in (0.0, 0.5, -0.5, 1.0, -1.0):
-                c, s = np.cos(yaw), np.sin(yaw)
-                a = np.array([c * f[0] - s * f[1], s * f[0] + c * f[1], tilt])
-                out.append(a / np.linalg.norm(a))
-        return out
+        c, s = np.cos(yaw), np.sin(yaw)
+        a = np.array([c * f[0] - s * f[1], s * f[0] + c * f[1], tilt])
+        self._params[tuple(np.round(a / np.linalg.norm(a), 4))] = (tilt, yaw)
+        return a / np.linalg.norm(a)
+
+    def _approaches(self, side, p):
+        """Ways in, most natural first: level-ish first (the hand wraps round from the side), then tipped down."""
+        return [self._approach(side, p, t, y) for t in self.TILTS for y in self.YAWS]
+
+    def _orders(self, what, o, heights):
+        """(height, tilt, yaw) to try: what worked for the most similar remembered shape first (grasp_memory.py)."""
+        combos = [(h, t, y) for h in heights for t in self.TILTS for y in self.YAWS]
+        mem = GRASP_MEMORY
+        hit = mem.recall(what, o) if mem is not None else None
+        if hit is not None:
+            first = min(combos, key=lambda c: (abs(c[0] - hit[0]), abs(c[1] - hit[1]), abs(c[2] - hit[2])))
+            combos.remove(first)
+            combos.insert(0, first)
+        return combos
 
     def _grasp_poses(self, o, side):
         """(pre-grasp, grasp, approach, dz) candidates that the arm can reach, in order - collision not checked."""
         p = self.grip_at.get(o, self.pos[o])            # a slid-out flat thing is taken by its overhang
-        for dz in (0.0, 0.01):
-            for an in self._approaches(side, p):
-                q = self._gsolve(side, p + (0, 0, dz), an)
-                if q is None:
-                    continue
-                pre = self._gsolve(side, p + (0, 0, dz + 0.03) - an * 0.08, an, loose=True)
-                if pre is not None:
-                    yield pre, q, an, dz
+        for dz, tilt, yaw in self._orders("grasp", o, (0.0, 0.01)):
+            an = self._approach(side, p, tilt, yaw)
+            q = self._gsolve(side, p + (0, 0, dz), an)
+            if q is None:
+                continue
+            pre = self._gsolve(side, p + (0, 0, dz + 0.03) - an * 0.08, an, loose=True)
+            if pre is not None:
+                yield pre, q, an, dz
+
+    def _remember(self, what, o, an, h):
+        tilt, yaw = self._params.get(tuple(np.round(an, 4)), (None, None))
+        if GRASP_MEMORY is not None and tilt is not None:
+            GRASP_MEMORY.learn(what, o, (h, tilt, yaw))
 
     def _flat(self, o):
         return 2 * OBJECTS[o][5] < FLAT_H
@@ -512,30 +534,30 @@ class HomeBody(motor.Body):
         plan = None
         closed, self.grip[side] = self.grip[side], 1.0     # checked as a fist
         try:
-            for fh in (0.03, 0.045, 0.06):                 # the arm can't point a fist straight down: come in like a grasp
+            # the arm can't point a fist straight down: come in like a grasp; what slid a similar shape first
+            for fh, tilt, yaw in self._orders("slide", o, (0.03, 0.045, 0.06)):
                 top = OBJECTS[o][5] + fh
-                for down in self._approaches(side, p):
-                    on = solve(p + (0, 0, top), down)
-                    drag = solve(new + (0, 0, top), down) if on is not None else None
-                    above = solve(p + (0, 0, top + 0.08), down, True) if drag is not None else None
-                    if above is None:
-                        continue
-                    hits = (self._hits(side, on, o, surf) + self._hits(side, drag, o, surf) +
-                            self._path_hits(side, above, on, o, surf) + self._path_hits(side, on, drag, o, surf))
-                    if not hits:
-                        plan = (on, drag, above, top, down)
-                        break
-                    if blockers is not None and not blockers:     # what is in the way of the most natural slide
-                        blockers += list(dict.fromkeys(h[1][4:].replace("_", " ") for h in hits
-                                                       if h[1].startswith("obj_") and
-                                                       h[1][4:].replace("_", " ") in OBJECTS))
-                if plan:
+                down = self._approach(side, p, tilt, yaw)
+                on = solve(p + (0, 0, top), down)
+                drag = solve(new + (0, 0, top), down) if on is not None else None
+                above = solve(p + (0, 0, top + 0.08), down, True) if drag is not None else None
+                if above is None:
+                    continue
+                hits = (self._hits(side, on, o, surf) + self._hits(side, drag, o, surf) +
+                        self._path_hits(side, above, on, o, surf) + self._path_hits(side, on, drag, o, surf))
+                if not hits:
+                    plan = (on, drag, above, top, down, fh)
                     break
+                if blockers is not None and not blockers:         # what is in the way of the most natural slide
+                    blockers += list(dict.fromkeys(h[1][4:].replace("_", " ") for h in hits
+                                                   if h[1].startswith("obj_") and
+                                                   h[1][4:].replace("_", " ") in OBJECTS))
         finally:
             self.grip[side] = closed
         if plan is None:
             return False
-        on, drag, above, top, down = plan
+        on, drag, above, top, down, fh = plan
+        self._remember("slide", o, down, fh)
         self.set_grip(side, 1.0, None, 0.3)                   # a fist: short, hard knuckles
         self._go_q(side, above, why=f"slide {o}", grasp=o)
         self._go_q(side, on, 0.5, grasp=o)
