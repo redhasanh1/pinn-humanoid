@@ -33,8 +33,11 @@ def test_moves_an_object_that_is_in_the_way():
     import numpy as np
     b = home.HomeBody(M)
     pl = home.to_local(home.ROOMS["kitchen"], b.pos["plate"][:2])
-    c = home.to_world("kitchen", (pl[0] + 0.06, pl[1]))              # the cup right beside the plate
+    # the cup right in front of the plate, on the way the flat plate is slid out to the counter edge (a cup 6 cm to
+    # the SIDE is no longer in the way of the real grasp, which is what this test used to set up)
+    c = home.to_world("kitchen", (pl[0], pl[1] + 0.07))
     b.pos["cup"] = np.array([c[0], c[1], b.pos["cup"][2]])
     b.run([{"do": "pick", "obj": "plate"}], finish=False)
     assert "moving the cup out of the way" in b.said and not b.problems
     assert b.where["plate"][0] == "held"
+    assert not collide.sweep(M, b, stride=1)                        # and nothing touched on the way
