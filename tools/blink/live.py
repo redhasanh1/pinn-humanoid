@@ -33,9 +33,11 @@ async def main():
         await stream.start()
         print(f"Live view of '{name}' at {stream.url}  (close the video window or Ctrl+C to stop)")
         feed = asyncio.create_task(stream.feed())
-        player = subprocess.Popen(["ffplay", "-hide_banner", "-loglevel", "error", "-fflags", "nobuffer", "-flags", "low_delay",
-                                   "-probesize", "200000", "-analyzeduration", "500000", "-framedrop", "-an",
-                                   "-window_title", f"Blink {name}", stream.url])
+        player = subprocess.Popen([
+            "ffplay", "-hide_banner", "-loglevel", "error",
+            "-fflags", "nobuffer+discardcorrupt", "-flags", "low_delay", "-probesize", "32", "-analyzeduration", "0",
+            "-an", "-sync", "ext", "-framedrop", "-vf", "setpts=0",   # show each frame the moment it arrives
+            "-window_title", f"Blink {name}", stream.url])
         while player.poll() is None and not feed.done():
             await asyncio.sleep(0.5)
         stream.stop()
