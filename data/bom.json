@@ -494,6 +494,14 @@
     "notes": "30 cm each, 10 total."
    },
    {
+    "item": "Power plug adapters (PSU to boards)",
+    "product": "20 pcs 5.5 x 2.1 mm DC barrel to screw terminal",
+    "url": "https://www.amazon.ca/dp/B0C4JJ2HB4",
+    "price": 11.99,
+    "qty": 1,
+    "notes": "Was in the Phase 1 plan but never ordered. Connects the 2 power supplies to the PCA9685 servo boards."
+   },
+   {
     "item": "Wire joiners",
     "product": "WAGO 221 lever connectors, 25 pcs",
     "url": "https://www.amazon.ca/dp/B0BYBHYLG2",
@@ -656,7 +664,8 @@
   ],
   "notes": [
    "Checked with Kimi (senior build manager) on 2026-09-27: cut the crimper and breadboard, swapped the wrench set for one 13 mm wrench, added nylock nuts, files, sandpaper, knife, tweezers, fuses, switch.",
-   "Breadboard kit re-added at Hasan's request (Kimi had marked it optional)."
+   "Breadboard kit re-added at Hasan's request (Kimi had marked it optional).",
+   "Recheck vs orders: the DC barrel-to-screw adapters from Phase 1 were never ordered; added."
   ]
  },
  "sizes": [
