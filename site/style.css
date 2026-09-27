@@ -212,3 +212,8 @@ nav a.active { color: var(--text); font-weight: 600; }
   .hand-controls input { width: 110px; }
   .hand-controls button { min-width: 0; padding: 8px 12px; }
 }
+
+/* live camera page */
+.live-form { display: flex; gap: 8px; margin: 12px 0; }
+.live-form input { padding: 8px 10px; border-radius: var(--radius); border: 1px solid var(--line); background: var(--surface); color: inherit; }
+.live-box img { display: block; width: 100%; height: auto; }

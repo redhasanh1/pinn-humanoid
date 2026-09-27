@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Live · PINN Humanoid</title>
+<meta name="description" content="PINN Humanoid (robotai): a physics-informed, open-source life-size AI humanoid built by students in Toronto.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-row">
+    <a class="brand" href="/">PINN Humanoid</a>
+    <nav>
+      <a href="/arm">The arm</a>
+      <a href="/legs">The legs</a>
+      <a href="/plan">Build plan</a>
+      <a href="/parts">Parts</a>
+      <a href="/live">Live</a>
+      <a href="/research">Research</a>
+    </nav>
+  </div>
+</header>
+<main class="wrap">
+  <section class="page-head">
+    <h1>Live camera</h1>
+    <p class="muted" id="live-status">Checking whether the camera is on...</p>
+    <form id="live-form" class="live-form">
+      <input id="live-key" type="password" placeholder="Password" autocomplete="current-password">
+      <button class="btn" type="submit">Watch</button>
+    </form>
+    <div class="table-wrap live-box"><img id="live-img" alt="Live camera" hidden></div>
+    <p class="muted">The camera streams from a PC at home, so it only works while that PC is running the stream. It is about 3-4 seconds behind real time.</p>
+  </section>
+</main>
+
+<footer class="wrap muted">robotai · Toronto · open source · <a href="https://github.com/redhasanh1/robotai">edit on GitHub</a></footer>
+<script>
+(async () => {
+  const $ = (id) => document.getElementById(id);
+  let live = {};
+  try { live = await fetch("/data/live.json", { cache: "no-store" }).then((r) => r.json()); } catch (e) {}
+  $("live-status").textContent = live.url
+    ? `Camera link last updated ${live.updated}. Ask Hasan for the password.`
+    : "The camera is off right now.";
+  $("live-form").hidden = !live.url;
+  $("live-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const img = $("live-img");
+    img.onerror = () => { $("live-status").textContent = "Wrong password, or the camera PC is off."; img.hidden = true; };
+    img.src = `${live.url}/stream?key=${encodeURIComponent($("live-key").value)}`;
+    img.hidden = false;
+  });
+})();
+</script>
+</body>
+</html>
