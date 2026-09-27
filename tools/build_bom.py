@@ -208,6 +208,35 @@ def build():
     wp.cell(r, 1, ("Cerebras = System-2 brain (planner, voice, replanning, success checks) in the cloud; "
                    "ACT/SmolVLA motor policy runs locally at 30-50 Hz. See research brief.")).font = base
 
+    # ---------------- Phase 3: tools + last parts ----------------
+    if "phase3" in DATA:
+        w3 = wb.create_sheet("Phase 3 - Tools")
+        setup(w3)
+        w3["A1"] = DATA["phase3"]["title"]
+        w3["A1"].font = title
+        w3["A2"] = " ".join(DATA["phase3"].get("notes", []))
+        w3["A2"].font = Font(name="Arial", size=9, italic=True)
+        header(w3, 4, cols)
+        r = 5
+        for rec in _rows(DATA["phase3"]["items"]):
+            row(w3, r, rec)
+            r += 1
+        label_value(w3, r, "Subtotal (CAD, pre-tax)", f"=SUM(F5:F{r-1})", tot_fill); r += 1
+        label_value(w3, r, f"With HST {DATA['tax_rate']:.0%}", f"=F{r-1}*{1 + DATA['tax_rate']}", tot_fill)
+
+    # ---------------- Sizes: what screw goes where ----------------
+    if "sizes" in DATA:
+        ws = wb.create_sheet("Screw sizes")
+        setup(ws, [26, 12, 12, 60, 28, 24])
+        ws["A1"] = "Screw sizes: what goes where"
+        ws["A1"].font = title
+        header(ws, 3, ["Part", "Thick (mm)", "Long (mm)", "Goes in", "Tool", "Status"])
+        for r, s in enumerate(DATA["sizes"], 4):
+            for c, v in enumerate([s["part"], s["thick_mm"], s["long_mm"], s["where"], s["tool"], s["status"]], 1):
+                cell = ws.cell(r, c, v)
+                cell.font, cell.border = base, box
+                cell.alignment = Alignment(vertical="top", wrap_text=True)
+
     wb.save(OUT)
     print("wrote", OUT)
 
