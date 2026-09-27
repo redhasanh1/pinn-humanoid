@@ -571,7 +571,15 @@
     "url": "https://www.amazon.ca/dp/B07H65J7DQ",
     "price": 19.98,
     "qty": 1,
-    "notes": "Check PSU voltage before plugging servos in."
+    "notes": "Must-have: check each power supply's voltage before plugging servos in (12 V by mistake burns 6 V servos)."
+   },
+   {
+    "item": "Breadboards + jumper wires",
+    "product": "830 + 400 point breadboards with jumper wire kit",
+    "url": "https://www.amazon.ca/dp/B0BMFXPSVG",
+    "price": 19.99,
+    "qty": 1,
+    "notes": "Test sensors/servo signals before soldering. Kimi said optional; re-added because Hasan asked."
    },
    {
     "item": "Heat shrink",
@@ -647,7 +655,8 @@
    }
   ],
   "notes": [
-   "Checked with Kimi (senior build manager) on 2026-09-27: cut the crimper and breadboard, swapped the wrench set for one 13 mm wrench, added nylock nuts, files, sandpaper, knife, tweezers, fuses, switch."
+   "Checked with Kimi (senior build manager) on 2026-09-27: cut the crimper and breadboard, swapped the wrench set for one 13 mm wrench, added nylock nuts, files, sandpaper, knife, tweezers, fuses, switch.",
+   "Breadboard kit re-added at Hasan's request (Kimi had marked it optional)."
   ]
  },
  "sizes": [
