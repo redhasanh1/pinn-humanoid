@@ -64,6 +64,37 @@ async function parts() {
   table($("p2"), p2.items, cur2, cur2 === "CAD"
     ? [["Subtotal", money(p2usd), "sub"], [`Total incl. the $316.40 hands cart`, money(p2usd + 316.40), "total"]]
     : [["Subtotal", money(p2usd, "USD"), "sub"], [`≈ CAD at ${bom.usd_to_cad}`, money(p2usd * bom.usd_to_cad), "total"]]);
+  if (bom.phase3 && $("p3")) {
+    const p3 = sum(bom.phase3.items);
+    $("p3-title").textContent = bom.phase3.title;
+    table($("p3"), bom.phase3.items, "CAD", [
+      ["Subtotal", money(p3), "sub"],
+      [`With HST ${Math.round(bom.tax_rate * 100)}%`, money(p3 * (1 + bom.tax_rate)), "total"],
+    ]);
+  }
+  if (bom.sizes && $("sizes")) sizes(bom.sizes);
+}
+
+// Screws and bolts side by side at real size, so "is this the right size?" is answered at a glance.
+function sizes(rows) {
+  const S = 3, gap = 40, top = 34, h = 100 * S + top + 40;
+  let x = 20;
+  const shapes = rows.map((r) => {
+    const w = r.thick_mm * S, len = r.long_mm * S, cx = x + Math.max(w, 13 * S) / 2;
+    const ball = r.part.includes("ball");
+    const g = ball
+      ? `<circle cx="${cx}" cy="${top + w / 2}" r="${w / 2}" fill="var(--muted)"/>`
+      : `<rect x="${cx - w * 0.9}" y="${top}" width="${w * 1.8}" height="${w * 0.8}" rx="2" fill="var(--muted)"/>`
+        + `<rect x="${cx - w / 2}" y="${top + w * 0.8}" width="${w}" height="${len}" fill="var(--muted)" opacity="0.75"/>`;
+    const label = `<text x="${cx}" y="${top - 12}" text-anchor="middle" font-size="12" fill="currentColor">${esc(r.part.replace(" mm bolt", "").replace(" mm self-tapper", "").replace(" (BB)", ""))}</text>`;
+    x += Math.max(w * 1.8, 13 * S) + gap;
+    return g + label;
+  }).join("");
+  $("sizes-draw").innerHTML = `<svg viewBox="0 0 ${x} ${h}" width="${x}" height="${h}" role="img" aria-label="Screws drawn to real size">${shapes}`
+    + `<line x1="20" y1="${h - 16}" x2="${20 + 50 * S}" y2="${h - 16}" stroke="currentColor"/><text x="${20 + 25 * S}" y="${h - 4}" text-anchor="middle" font-size="11" fill="currentColor">50 mm</text></svg>`;
+  $("sizes").innerHTML = `<thead><tr><th>Part</th><th class="num">Thick</th><th class="num">Long</th><th>Goes in</th><th>Tool</th><th>Status</th></tr></thead><tbody>`
+    + rows.map((r) => `<tr><td>${esc(r.part)}</td><td class="num">${r.thick_mm} mm</td><td class="num">${r.long_mm} mm</td><td>${esc(r.where)}</td><td>${esc(r.tool)}</td><td>${esc(r.status)}</td></tr>`).join("")
+    + "</tbody>";
 }
 
 // Part list next to a 3D view: pointing at a part lights it up in the model.
