@@ -1,0 +1,255 @@
+<title>PINN Brain Stack</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#eef1ee; --panel:#f8faf8; --ink:#16211d; --muted:#5b6b64; --line:#cfd8d3;
+  --accent:#c2611f; --accent-soft:#f3e2d4;
+  --t0:#3d6b8c; --t1:#2f7a5c; --t2:#8a5a9e; --t3:#c2611f; --t4:#6b6f2a;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"Cascadia Mono",Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0f1513; --panel:#161e1b; --ink:#e3ebe7; --muted:#93a39c; --line:#2a3632;
+    --accent:#e8894a; --accent-soft:#3a2618;
+    --t0:#7fb2d6; --t1:#6cc79f; --t2:#c49ad6; --t3:#e8894a; --t4:#c3c77a;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0f1513; --panel:#161e1b; --ink:#e3ebe7; --muted:#93a39c; --line:#2a3632;
+  --accent:#e8894a; --accent-soft:#3a2618;
+  --t0:#7fb2d6; --t1:#6cc79f; --t2:#c49ad6; --t3:#e8894a; --t4:#c3c77a;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:15px/1.6 var(--sans);margin:0;padding-inline:16px;padding-block:28px 64px}
+.wrap{max-width:980px;margin:0 auto;display:grid;gap:36px}
+h1,h2,h3{text-wrap:balance;margin:0;line-height:1.2}
+h1{font-size:clamp(28px,5vw,40px);font-weight:700;letter-spacing:-.01em}
+h2{font-size:21px;font-weight:600}
+h3{font-size:16px;font-weight:600}
+p{margin:0;max-width:68ch}
+.eyebrow{font:500 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.lede{font-size:17px;color:var(--ink)}
+.muted{color:var(--muted)}
+section{display:grid;gap:14px}
+.mono{font-family:var(--mono)}
+code{font-family:var(--mono);font-size:.92em;background:var(--accent-soft);padding:1px 5px;border-radius:4px}
+
+/* tier stack */
+.stack{display:grid;gap:10px}
+.tier{display:grid;grid-template-columns:132px 1fr 150px;gap:16px;align-items:start;background:var(--panel);border:1px solid var(--line);border-left:6px solid var(--c);border-radius:8px;padding:14px 16px}
+.tier .where{font:600 13px/1.3 var(--sans)}
+.tier .where small{display:block;font:400 12px/1.4 var(--mono);color:var(--muted);margin-top:4px}
+.tier ul{margin:0;padding-left:18px;display:grid;gap:2px}
+.tier .speed{text-align:right;font:500 13px/1.35 var(--mono);color:var(--c)}
+.tier .speed small{display:block;color:var(--muted);font-weight:400}
+.link{display:flex;align-items:center;gap:10px;padding-left:148px;font:12px/1.3 var(--mono);color:var(--muted)}
+.link::before{content:"";width:2px;height:18px;background:var(--line)}
+@media (max-width:720px){
+  .tier{grid-template-columns:1fr}
+  .tier .speed{text-align:left}
+  .link{padding-left:8px}
+}
+
+/* tables */
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--panel)}
+table{border-collapse:collapse;width:100%;min-width:620px;font-size:14px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:500 12px/1.3 var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--muted);background:color-mix(in srgb,var(--panel) 80%,var(--line))}
+tr:last-child td{border-bottom:0}
+td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.pick{background:var(--accent-soft)}
+.tag{display:inline-block;font:500 11px/1.6 var(--mono);padding:0 7px;border-radius:99px;border:1px solid var(--c,var(--line));color:var(--c,var(--muted));white-space:nowrap}
+
+/* idea cards */
+.ideas{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.idea{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:16px;display:grid;gap:8px;align-content:start}
+.idea .n{font:500 12px/1 var(--mono);color:var(--accent);letter-spacing:.06em;text-transform:uppercase}
+
+/* timeline strip */
+.budget{display:grid;gap:6px}
+.bar{display:grid;grid-template-columns:150px 1fr;gap:12px;align-items:center;font-size:13px}
+.bar .track{height:14px;background:color-mix(in srgb,var(--line) 55%,transparent);border-radius:3px;position:relative;overflow:hidden}
+.bar .fill{position:absolute;inset:0 auto 0 0;background:var(--c);border-radius:3px}
+.bar .v{font:500 12px/1 var(--mono);color:var(--muted);margin-left:8px}
+.scale{display:grid;grid-template-columns:150px 1fr;gap:12px;font:11px/1 var(--mono);color:var(--muted)}
+.scale div{display:flex;justify-content:space-between}
+@media (max-width:560px){.bar,.scale{grid-template-columns:1fr}.scale span:first-child{display:none}}
+
+ol.steps{margin:0;padding-left:22px;display:grid;gap:8px;max-width:72ch}
+.note{border:1px dashed var(--line);border-radius:8px;padding:12px 14px;font-size:14px;color:var(--muted)}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+
+<div class="wrap">
+
+<header style="display:grid;gap:12px">
+  <div class="eyebrow">PINN Humanoid · compute architecture · 27 Sep 2026</div>
+  <h1>PINN Brain Stack</h1>
+  <p class="lede">Five layers of compute, each doing only what it is fast enough for. Reflexes never wait for the network, the robot's own chip does the seeing, a rented GPU checks plans against physics, the cloud does the thinking, and overnight the robot "dreams" so it wakes up better without any training.</p>
+  <p class="muted">Hardware picks and prices from Kimi (senior build manager, web search, 27 Sep 2026). Speeds on the robot chip are estimates until we measure them. The 1,024-grasp physics number is our own measurement.</p>
+</header>
+
+<section>
+  <h2>The stack</h2>
+  <div class="stack">
+    <div class="tier" style="--c:var(--t0)">
+      <div class="where">Reflex<small>ESP32 on each hand</small></div>
+      <ul>
+        <li>Servo control, watchdog, e-stop</li>
+        <li>Slip abort and squeeze guard from the finger sensors</li>
+        <li>Keeps working if every computer above it freezes</li>
+      </ul>
+      <div class="speed">~1 ms<small>always local</small></div>
+    </div>
+    <div class="link">USB / serial · ~10 ms</div>
+    <div class="tier" style="--c:var(--t1)">
+      <div class="where">Robot brain<small>Jetson Orin Nano Super 8 GB</small></div>
+      <ul>
+        <li>YOLO11n object finder every frame (30 fps)</li>
+        <li>Depth Anything V2 Small about 8 times a second</li>
+        <li>Our exact geometry: grasp point, body/collision check</li>
+        <li>Surprise meter (decides when to call the tiers below)</li>
+        <li>Qwen 3B fallback brain when the internet is down</li>
+      </ul>
+      <div class="speed">50–200 ms<small>camera → hand moving</small></div>
+    </div>
+    <div class="link">Wi-Fi → internet · 0.3–0.6 s round trip · advisory only</div>
+    <div class="tier" style="--c:var(--t3)">
+      <div class="where">Physics oracle<small>rented RTX 4090, lab sessions only</small></div>
+      <ul>
+        <li>Robot sends object poses + the planned grasp</li>
+        <li>GPU runs 512–2,048 copies of the scene with friction, mass and pose shaken up (MuJoCo Warp)</li>
+        <li>Returns the most robust grasp and a real success probability</li>
+      </ul>
+      <div class="speed">~0.2 s compute<small>+ network</small></div>
+    </div>
+    <div class="link">only when the surprise meter trips</div>
+    <div class="tier" style="--c:var(--t2)">
+      <div class="where">Cloud reasoner<small>Cerebras</small></div>
+      <ul>
+        <li>"What next?" and "did it work?" from one small picture + a scene summary</li>
+        <li>Answer lands in a mailbox; the robot never stops to wait for it</li>
+      </ul>
+      <div class="speed">1.5–2.5 s<small>async</small></div>
+    </div>
+    <div class="link">overnight</div>
+    <div class="tier" style="--c:var(--t4)">
+      <div class="where">Dream mode<small>4090 for one hour, ~C$1</small></div>
+      <ul>
+        <li>Replays the day's objects in thousands of shaken-up worlds</li>
+        <li>Writes "this grasp is fragile when the surface is slippery" into the robot's habit memory</li>
+        <li>No model weights change. The robot just remembers better.</li>
+      </ul>
+      <div class="speed">~1 h / night<small>~C$21 / month</small></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>How fast each step is</h2>
+  <p class="muted">From the moment something happens in front of the camera. Bars share one scale (0–2.5 s).</p>
+  <div class="budget">
+    <div class="bar" style="--c:var(--t0)"><span>Reflex (slip, e-stop)</span><div class="track"><div class="fill" style="width:0.4%"></div></div></div>
+    <div class="bar" style="--c:var(--t1)"><span>Reach correction</span><div class="track"><div class="fill" style="width:3.2%"></div></div></div>
+    <div class="bar" style="--c:var(--t1)"><span>New grasp plan</span><div class="track"><div class="fill" style="width:8%"></div></div></div>
+    <div class="bar" style="--c:var(--t3)"><span>Physics oracle check</span><div class="track"><div class="fill" style="width:24%"></div></div></div>
+    <div class="bar" style="--c:var(--t2)"><span>Cloud reasoning</span><div class="track"><div class="fill" style="width:100%"></div></div></div>
+    <div class="scale"><span></span><div><span>0</span><span>0.5 s</span><span>1 s</span><span>1.5 s</span><span>2 s</span><span>2.5 s</span></div></div>
+  </div>
+  <div class="tw"><table>
+    <thead><tr><th>Step</th><th>Runs on</th><th>How often</th><th>Latency</th></tr></thead>
+    <tbody>
+      <tr><td>Servo loop, slip guard</td><td>ESP32</td><td class="num">1 kHz</td><td class="num">~1 ms</td></tr>
+      <tr><td>Object finder (YOLO11n)</td><td>Jetson</td><td class="num">every frame, 30 fps</td><td class="num">~5–10 ms</td></tr>
+      <tr><td>Depth (Depth Anything V2 S)</td><td>Jetson</td><td class="num">every 3–5 frames</td><td class="num">~30–50 ms</td></tr>
+      <tr><td>Find a new object by name (YOLO-World)</td><td>Jetson</td><td class="num">on demand</td><td class="num">~20–40 ms</td></tr>
+      <tr><td>Grasp point + collision check</td><td>Jetson (our geometry)</td><td class="num">every plan</td><td class="num">ms</td></tr>
+      <tr><td>Robustness check, 1,024 worlds</td><td>Rented 4090</td><td class="num">when surprised</td><td class="num">0.3–0.6 s total</td></tr>
+      <tr><td>Next step / did it work</td><td>Cerebras</td><td class="num">when surprised, ≤1 per 1–2 s</td><td class="num">1.5–2.5 s</td></tr>
+      <tr><td>Dream mode</td><td>Rented 4090</td><td class="num">once a night</td><td class="num">~1 h batch</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2>Which chip goes on the robot</h2>
+  <p>NVIDIA raised Jetson prices about 60% in July 2026. The Orin Nano Super went from US$249 to US$399 and still wins. The Quadro M1200 laptop becomes the keyboard and screen: its 2014-era Maxwell chip is no longer supported by current PyTorch and TensorRT.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Option</th><th>Price (CAD)</th><th>Verdict</th></tr></thead>
+    <tbody>
+      <tr class="pick"><td><b>Jetson Orin Nano Super 8 GB</b></td><td class="num">≈ C$560</td><td><span class="tag" style="--c:var(--t1)">buy</span> Runs the whole robot-brain tier above in 8 GB. Mounts on the robot, runs on battery.</td></tr>
+      <tr><td>Jetson Orin NX 16 GB</td><td class="num">≈ C$1,270</td><td>More headroom, over budget for v1.</td></tr>
+      <tr><td>Jetson AGX Thor</td><td class="num">≈ C$7,700</td><td>Overkill.</td></tr>
+      <tr><td>Raspberry Pi 5 + Hailo-10H</td><td class="num">≈ C$330</td><td>Cheaper, but weaker tooling for depth and the local brain.</td></tr>
+      <tr><td>RK3588 NPU board</td><td class="num">≈ C$200</td><td>Cheapest; model conversion is painful.</td></tr>
+      <tr><td>Quadro M1200 laptop</td><td class="num">owned</td><td>Screen and keyboard only.</td></tr>
+      <tr><td>GTX 1660 Ti PC (other country)</td><td class="num">owned</td><td>Too far away for the live loop. Good for sims, slicing and batch jobs.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2>What nobody else is doing</h2>
+  <div class="ideas">
+    <div class="idea">
+      <div class="n">Idea 1</div>
+      <h3>Surprise-budgeted attention</h3>
+      <p>The robot only pays for big compute when the world surprises it: the change detector fires, or what it sees doesn't match what it expected. Routine scenes run on free local habits. The capstone graph: cloud calls per task vs success rate, with the surprise threshold as the dial.</p>
+    </div>
+    <div class="idea">
+      <div class="n">Idea 2</div>
+      <h3>Physics oracle</h3>
+      <p>Before a risky grasp, a rented GPU replays it in 1,024 slightly different worlds and returns a real probability of success. Most robots guess; this one checks. We already measured 1,024 grasp candidates in 1.9 s on the 1660 Ti; a 4090 does it in about 0.2 s.</p>
+    </div>
+    <div class="idea">
+      <div class="n">Idea 3</div>
+      <h3>Dream mode</h3>
+      <p>Overnight, one cheap GPU hour replays the day's objects and writes the lessons into the robot's habit memory. Dreamer-style robots retrain their weights; ours changes no weights at all. It just wakes up remembering which grasps are fragile. The graph: yesterday's objects, success before vs after dreaming.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Monthly cost</h2>
+  <div class="tw"><table>
+    <thead><tr><th>Item</th><th>Plan</th><th>Cost</th></tr></thead>
+    <tbody>
+      <tr><td>Jetson Orin Nano Super</td><td>one-time</td><td class="num">≈ C$560</td></tr>
+      <tr><td>Physics oracle</td><td>RTX 4090 booted only for lab sessions (RunPod US$0.34–0.69/h, Vast from US$0.14/h)</td><td class="num">C$1–3 / session</td></tr>
+      <tr><td>Dream mode</td><td>4090, one hour a night</td><td class="num">≈ C$21 / month</td></tr>
+      <tr><td>Cerebras</td><td>surprise-gated calls only</td><td class="num">small</td></tr>
+      <tr><td>Always-on 5090</td><td>rejected: US$0.69/h × 24/7</td><td class="num">≈ US$500 / month</td></tr>
+    </tbody>
+  </table></div>
+  <p class="muted">A 4090 instead of a 5090: the physics job is limited by scene size, not raw speed, so it gives the same answer at half the price.</p>
+</section>
+
+<section>
+  <h2>Build order</h2>
+  <ol class="steps">
+    <li><b>Now, free:</b> run the robot-brain tier on the laptop with the InnoMaker camera. Measure real fps.</li>
+    <li><b>Buy the Jetson Orin Nano Super</b> and move that tier onto it, on the robot.</li>
+    <li><b>Surprise meter:</b> wire the existing change detector and expectation checks into one score that decides when to call the cloud.</li>
+    <li><b>Physics oracle:</b> a small API on a rented 4090 that takes a scene + grasp and returns the best grasp and its probability. Advisory only.</li>
+    <li><b>Dream mode:</b> a nightly job that uploads the day's objects, runs the oracle in batch, and writes the results into habit memory.</li>
+    <li><b>Measure:</b> cloud calls per task, and grasp success before vs after a night of dreaming.</li>
+  </ol>
+</section>
+
+<section>
+  <h2>What can go wrong</h2>
+  <div class="note">
+    <b>Wi-Fi jitter:</b> nothing past the robot chip is ever allowed in the reflex path. The oracle and the cloud are advisory; if they're late, the robot keeps its current plan.<br>
+    <b>Rented GPUs can vanish mid-session:</b> the robot must run fine without them.<br>
+    <b>The oracle is only as right as our physics model:</b> if the finger/tendon model is wrong, it returns confident nonsense. Keep testing the sim against the real hands.<br>
+    <b>Too early for the oracle:</b> sim grasps already succeed 92–98%. The oracle earns its cost once real grasps start failing on real objects, not before.
+  </div>
+</section>
+
+</div>
