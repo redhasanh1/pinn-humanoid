@@ -30,9 +30,9 @@ Price tags: **[page]** = I read the price on the vendor page. **[snippet]** = th
 | **Open Duck Mini v2** (apirrone, BDX clone) | about 0.42 m / not stated | 14 servos (legs + head) | **STS3215 7.4 V** (€14 each) | **under $400**; €347–414 ([README](https://github.com/apirrone/Open_Duck_Mini/blob/v2/README.md), [BOM snippet](https://www.scribd.com/document/861565028/BOM-Open-Duck-Mini-V2)) [snippet] | Yes. ONNX walking policies published, running on a Pi Zero 2W ([GitHub](https://github.com/apirrone/Open_Duck_Mini)) | MuJoCo Playground ([Open_Duck_Playground](https://github.com/apirrone/Open_Duck_Playground)) | Apache-2.0 |
 | **K-Scale Zeroth-01 / Z-Bot** | about 0.40 m | about 16 | **STS3250** in the legs (STS3215 at 45 RPM was "no longer sufficient" for the legs), STS3215 in the arms ([build log](https://github.com/Justin-Riekehof/zeroth-01-build)) | BOM from **$350** ([X](https://x.com/kscalelabs/status/1856155245967192471)); Z-Bot kit was $999 ([snippet](https://www.awesomerobots.xyz/robots/kscale-zbot)) | RL walking in MuJoCo/ksim, deployed on a Pi 4 | ksim (MuJoCo) | MIT. **K-Scale shut down in Nov 2025 and open-sourced all its IP** ([Humanoids Daily](https://www.humanoidsdaily.com/news/k-scale-labs-cancels-k-bot-orders-open-sources-all-ip-after-funding-fails)), so the project is unmaintained |
 | **LeRobot Humanoid** (Hugging Face, May 2026) | not stated / legs only | 12 leg motors | **RobStride** QDD: 2x RS00, 2x RS02, 4x RS03, 4x RS05 ([bom_buy.csv](https://github.com/huggingface/lerobot-humanoid-hardware)) | **about $2,500 USD, legs only** ([HF blog](https://huggingface.co/blog/VirgileBatto/lerobot-humanoid)) | **Only an early standing policy.** Locomotion is still experimental ([Humanoids Daily](https://www.humanoidsdaily.com/news/hugging-face-drops-a-2-500-3d-printed-humanoid-for-open-robot-learning)) | **mjlab** + lerobot-legged-zoo | [GitHub](https://github.com/huggingface/lerobot-humanoid) |
-| **HopeJR** (HF + TheRobotStudio) | "full-size" | 66 claimed | not specified in the sources | about $2,500–3,000 ([TechCrunch](https://techcrunch.com/2025/05/29/hugging-face-unveils-two-new-humanoid-robots/)) [snippet] | The repo's active work is the **Arm/** branch (LeRobot teleop). I found no evidence of RL walking ([GitHub](https://github.com/TheRobotStudio/HOPEJr)) | — | [GitHub](https://github.com/TheRobotStudio/HOPEJr) |
+| **HopeJR** (HF + TheRobotStudio) | "full-size" | 66 claimed | not specified in the sources | about $2,500–3,000 ([TechCrunch](https://techcrunch.com/2025/05/29/hugging-face-unveils-two-new-humanoid-robots/)) [snippet] | The repo's active work is the **Arm/** branch (LeRobot teleop). I found no evidence of RL walking ([GitHub](https://github.com/TheRobotStudio/HOPEJr)) |, | [GitHub](https://github.com/TheRobotStudio/HOPEJr) |
 | **Microduck** (Pollen/HF, Aug 2026) | 0.25 m / <0.8 kg | 15 | Dynamixel XL330-class | **$399 retail** ([CNX](https://www.cnx-software.com/2026/08/28/microduck-a-duck-like-biped-robot-designed-for-physical-ai-experimentation-and-fun/)) [snippet] | Yes, ships with walk, kick, grab and recovery skills | RL stack included | open |
-| **Asimov v1** (Menlo) | 1.2 m / 35 kg | 25 | Encos QDD | **about $16k** BOM; legs alone about $10k ([snippet](https://docs.menlo.ai/asimov/1/bom)) | Pre-trained walking policy | — | [GitHub](https://github.com/asimovinc/asimov-1) |
+| **Asimov v1** (Menlo) | 1.2 m / 35 kg | 25 | Encos QDD | **about $16k** BOM; legs alone about $10k ([snippet](https://docs.menlo.ai/asimov/1/bom)) | Pre-trained walking policy |, | [GitHub](https://github.com/asimovinc/asimov-1) |
 
 **Commercial price references**
 
@@ -40,9 +40,9 @@ Price tags: **[page]** = I read the price on the vendor page. **[snippet]** = th
 |---|---|---|
 | **Noetix Bumi** | 0.94 m / 12 kg | **$1,408 USD** ([SCMP](https://www.scmp.com/tech/tech-trends/article/3330046/chinese-robotics-start-noetix-debuts-family-friendly-us1400-humanoid)) [snippet] |
 | **Unitree R1** | 1.22 m / 25 kg, 26 DOF | **$5,900** ([humanoid.guide](https://humanoid.guide/product/unitree-r1/)) [snippet] |
-| **Booster K1** | — | $4,999–5,999 ([Humanoids Daily](https://www.humanoidsdaily.com/news/booster-robotics-launches-k1-robocup-champion-platform)) |
-| **Booster T1** | — | about $29.8–34k ([snippet](https://botinfo.ai/articles/booster-t1-robot)) |
-| **Robotis OP3** | — | $11,969 ([robotis.us](https://www.robotis.us/robotis-op3-us/)) [snippet] |
+| **Booster K1** |, | $4,999–5,999 ([Humanoids Daily](https://www.humanoidsdaily.com/news/booster-robotics-launches-k1-robocup-champion-platform)) |
+| **Booster T1** |, | about $29.8–34k ([snippet](https://botinfo.ai/articles/booster-t1-robot)) |
+| **Robotis OP3** |, | $11,969 ([robotis.us](https://www.robotis.us/robotis-op3-us/)) [snippet] |
 
 **What the table shows [analysis]:** every open humanoid that walks under an RL policy and costs under $1k USD is **at or below 0.45 m** and uses Feetech STS servos. At 0.56 m (ToddlerBot) you need about 3 Nm knees. At 0.8 m (BHL) you are into BLDC-plus-reducer actuators and $3–4k.
 
@@ -55,12 +55,12 @@ Price tags: **[page]** = I read the price on the vendor page. **[snippet]** = th
 | Servo | Stall torque | Mass | Speed | Price | Notes |
 |---|---|---|---|---|---|
 | **STS3215 12 V (C018)** | 30 kg·cm ≈ **2.94 Nm** | about 55 g [est] | about 45 RPM (K-Scale called it too slow for knees) | **$15.99 each, $14.99 at 5+, $13.99 at 10+** ([WowRobo](https://shop.wowrobo.com/products/feetech-sts3215-servo-12v-30kg-high-torque-servo-for-so-arm100)) [page] | The SO-101 / LeRobot standard servo; 1/345 gearing |
-| STS3215 7.4 V | 19 kg·cm ≈ 1.86 Nm | — | — | €14 (Open Duck BOM) [snippet] | Used as the LeRobot leader-arm servo |
+| STS3215 7.4 V | 19 kg·cm ≈ 1.86 Nm |, |, | €14 (Open Duck BOM) [snippet] | Used as the LeRobot leader-arm servo |
 | **STS3250** | 50 kg·cm ≈ **4.9 Nm** @12 V; stall 4.2 A | **74.5 g** | 0.13 s/60° ≈ **77 RPM** ([servodatabase](https://servodatabase.com/servo/feetech/sts3250)) | **$43.00** ([WowRobo](https://shop.wowrobo.com/products/feetech-sts3250-c002-servo-12v-50kg-1-345-servo)) [page]; AliExpress about $48–55 [snippet] | Independent test: 48 kg·cm peak, **only about 25 kg·cm sustained** before protection trips, 0.43° backlash, warms about 3.75 °C/min at 40% load ([Robonine](https://robonine.com/feetech-sts3250-smart-actuator-evaluation-of-accuracy-torque-and-backlash/)) |
-| STS3235 | about 35 kg·cm | — | — | from $56 ([AIFITLAB](https://aifitlab.com/collections/feetech)) [snippet] | Costs more than the STS3250 for less torque, so skip it |
-| HLS3930M | 35 kg·cm @12 V, stall 2.8 A, current-loop / constant-force mode | — | — | not found | True current control is useful for RL, but I found no verified price |
-| SM120BL | 120 kg·cm, RS485/Modbus | — | — | not found ([AIFITLAB](https://aifitlab.com/products/feetech-sm120bl-servo-motor)) | Industrial servo, heavy and pricey; overkill here |
-| Bus adapter | — | — | — | **Waveshare Bus Servo Adapter (A): $4.99** ([Waveshare](https://www.waveshare.com/bus-servo-adapter-a.htm)) [page] | USB/UART, 9–12.6 V in |
+| STS3235 | about 35 kg·cm |, |, | from $56 ([AIFITLAB](https://aifitlab.com/collections/feetech)) [snippet] | Costs more than the STS3250 for less torque, so skip it |
+| HLS3930M | 35 kg·cm @12 V, stall 2.8 A, current-loop / constant-force mode |, |, | not found | True current control is useful for RL, but I found no verified price |
+| SM120BL | 120 kg·cm, RS485/Modbus |, |, | not found ([AIFITLAB](https://aifitlab.com/products/feetech-sm120bl-servo-motor)) | Industrial servo, heavy and pricey; overkill here |
+| Bus adapter |, |, |, | **Waveshare Bus Servo Adapter (A): $4.99** ([Waveshare](https://www.waveshare.com/bus-servo-adapter-a.htm)) [page] | USB/UART, 9–12.6 V in |
 
 The STS3250 is a better knee servo than ToddlerBot's Dynamixel knee:
 - It has 4.9 Nm of stall torque against the XM430-W210's 3.0 Nm, at a similar no-load speed.
@@ -75,7 +75,7 @@ The STS3250 is a better knee servo than ToddlerBot's Dynamixel knee:
 | **DIY 5010 cycloid** (cheap 5010 motor + B-G431B-ESC1 + AS5600 + bearings) | unknown; the BHL 5010 variant is its low-torque actuator | motor $12–24 ([AliExpress](https://www.aliexpress.com/item/32652929168.html)) [snippet] + ESC $29.25 ([DigiKey](https://www.digikey.com/en/products/detail/stmicroelectronics/B-G431B-ESC1/10321670)) [snippet] + about $10 in encoder and bearings [est] ≈ **$55–65**. A MakerWorld design claims $40 ([Hackaday comments](https://hackaday.com/2026/08/30/lower-cost-humanoid-robot-leverages-diy-actuators/)) | about $700 USD ≈ **$990 CAD**, before any failures |
 | **SteadyWin GIM6010-8** (planetary 8:1, driver included) | **5 Nm rated / 11 Nm peak**, 388 g | $70.35 (listed sold out) ([SteadyWin](https://steadywin-motor.com/products/built-in-star-gear-motor-motor-robot-joint-driver-actuator-controller-motor)) [page]; eBay $88–95 with driver ([snippet](https://www.ebay.com/itm/397474989754)) | about $1,000 USD ≈ **$1,430 CAD** |
 | **RobStride 02** (QDD, 17 Nm) / **RobStride 05** (5.5 Nm) | 17 Nm / 5.5 Nm | $240 / $110 ([robstride.com](https://robstride.com/)) [snippet] | about $2,000 USD. This is what the LeRobot Humanoid uses |
-| Drivers for reference | — | ODESC v4.2 $29–39 ([Flipsky](https://www.flipskyo.com/products/odesc-v4-2-24v-56v-controller)) [snippet]. SimpleFOC Mini is about 2.5 A class, too weak for 5010-class leg motors [analysis] | — |
+| Drivers for reference |, | ODESC v4.2 $29–39 ([Flipsky](https://www.flipskyo.com/products/odesc-v4-2-24v-56v-controller)) [snippet]. SimpleFOC Mini is about 2.5 A class, too weak for 5010-class leg motors [analysis] |, |
 
 **Verdict [analysis]:** every BLDC path costs at least 2x the leg budget, and the DIY cycloid path also costs weeks of actuator R&D. BHL spent a paper's worth of work on backlash and endurance. For a 16-week, 2-person project that also has to do manipulation, Feetech is the only option that fits both the money and the timeline.
 
@@ -98,7 +98,7 @@ Define a margin ratio `R = τ_stall / (m · g · L_leg)`, with leg length L_leg 
 | **0.62 m** | **4.2–4.6 kg** | 0.28 m | 1.2–1.3 | **0.38–0.42** | **recommended** |
 | 0.70 m | 6.6 kg | 0.32 m | 2.1 | 0.24 | marginal; needs 2 servos per knee or a 2:1 printed stage (costs speed) |
 | 0.90 m | 14 kg | 0.40 m | 5.6 | 0.09 | impossible on servos; needs about 15–20 Nm BLDC (BHL class) |
-| 1.2 m+ | 25–35 kg | 0.55 m | 14–19 | — | R1 / Asimov class: $6k–$16k |
+| 1.2 m+ | 25–35 kg | 0.55 m | 14–19 |, | R1 / Asimov class: $6k–$16k |
 
 Continuous-torque check at 0.62 m: walking needs about 0.1·m·g·L ≈ 1.2 Nm, and the STS3250's sustained capacity is about 2.45 Nm. That is fine, as long as the policy is not trained to crouch deeply.
 
@@ -127,9 +127,9 @@ This is ToddlerBot's joint layout and proportions, with Feetech servos in place 
 | | knee | **STS3250** (4.9 Nm) | XM430, 3.0 Nm |
 | | ankle pitch | **STS3250** (4.9 Nm) | XM430, 3.0 Nm |
 | | ankle roll | STS3215 12 V | XC430, 1.9 Nm |
-| Arm (x2) | shoulder pitch, shoulder roll, elbow, wrist, gripper | 5x STS3215 12 V | — |
-| Torso | waist yaw | STS3215 | — |
-| Head | neck yaw/pitch | 2x STS3215 | — |
+| Arm (x2) | shoulder pitch, shoulder roll, elbow, wrist, gripper | 5x STS3215 12 V |, |
+| Torso | waist yaw | STS3215 |, |
+| Head | neck yaw/pitch | 2x STS3215 |, |
 
 Mass estimate [analysis]:
 
@@ -210,7 +210,7 @@ Compute note [analysis]:
 | **ToddlerBot codebase** (MJX + Brax PPO) | ToddlerBot | 3e8 steps, 1024 envs, zero-shot after sysid. Pip-installable, MIT code ([GitHub](https://github.com/hshi74/toddlerbot)). **Best template: same joint layout as our design** |
 | **mjlab** (Isaac Lab API on MuJoCo-Warp) | LeRobot Humanoid (lerobot-legged-zoo) | Needs an NVIDIA GPU. Has a `Mjlab-Velocity-Flat-*` humanoid task ([GitHub](https://github.com/mujocolab/mjlab)). Good if you want Isaac Lab ergonomics without Omniverse |
 | **Isaac Lab** | Berkeley Humanoid Lite | Heavier install. Best if you later move to BLDC legs |
-| Genesis | — | I found no sim-to-real reference for a small Feetech biped [analysis]; don't be the first on a 16-week clock |
+| Genesis |, | I found no sim-to-real reference for a small Feetech biped [analysis]; don't be the first on a 16-week clock |
 
 **Pipeline** [analysis, based on what ToddlerBot and Open Duck did]:
 1. Export the Onshape design to MJCF with onshape-to-robot. Get the masses right by weighing the printed parts.

@@ -1,11 +1,10 @@
 // Renders the site from data/*.json and research/*.md.
 const DOCS = [
-  ["Cerebras thesis", "/research/cerebras_thesis.md"],
-  ["Fast-inference physical AI", "/research/physical_ai_fast_inference.md"],
-  ["Cerebras platform", "/research/cerebras_platform.md"],
-  ["Physical-AI brief", "/research/physical_ai_research.md"],
-  ["Kimi review", "/research/kimi_research.md"],
-  ["XLeRobot BOM", "/research/xlerobot_official_bom.md"],
+  ["How the robot learns", "/research/overview.md"],
+  ["Physics-informed learning", "/research/pinns.md"],
+  ["What it learned in simulation", "/research/sim_results.md"],
+  ["Robot foundation models", "/research/robot_brains.md"],
+  ["Why fast inference matters", "/research/speed.md"],
 ];
 
 // What the robot is for. "now" = targeted in the 16-week build, "next" = after it.
@@ -39,9 +38,9 @@ async function home() {
   $("jobs").innerHTML = JOBS.map(([j, w]) => `<li class="${w}">${esc(j)}<span>${w === "now" ? "16-week build" : "next"}</span></li>`).join("");
   $("stats").innerHTML = [
     ["Life-size", "InMoov-based humanoid, 1.8 m"],
+    ["50,000+", "Practice throws in physics simulation"],
+    ["24", "Arm print plates designed and in production"],
     ["C$1,500", "Whole-robot budget, printing free"],
-    [money(taxed), "Hands cart incl. tax"],
-    [`${cards.filter((c) => c.done).length}/${cards.length}`, "Plan steps done"],
   ].map(([v, k]) => `<div class="stat"><div class="v">${v}</div><div class="k">${k}</div></div>`).join("");
 }
 
