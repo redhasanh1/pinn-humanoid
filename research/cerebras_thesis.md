@@ -21,7 +21,7 @@ Latency: Cerebras has a live Montreal datacenter about 7.9 ms from Toronto. A th
 ## Ranked unlocks for our 16 weeks
 
 1. **Best-of-N + VLM verifier (buildable, strongest).** Sample about 16 candidate action chunks locally, then have a 27-31B VLM on Cerebras pick the best one. RoboMonkey gets **+25% on out-of-distribution tasks**, but runs at only 1.5 Hz on an H100 (650 ms for 16 samples). On Cerebras the estimate is **about 90-130 ms, or 7-10 Hz**. Error drops as a power law in samples, so speed turns directly into success rate.
-2. **World-model planning in about 1 s instead of 16 s (medium risk).** V-JEPA 2-AC takes 16 s per action on a 4090, DINO-WM 53 s per plan, Cosmos 4 min. Search over imagined futures only becomes real-time with far more compute. This needs a custom model served on Cerebras, so it needs internal access.
+2. **World-model planning in about 1 s instead of 16 s (medium risk).** V-JEPA 2-AC takes 16 s per action on a 4090, DINO-WM 53 s per plan, Cosmos 4 min. Search over imagined futures only becomes real-time with far more compute. This needs a custom model served on Cerebras, which we'll be using for exactly this.
 3. **Embodied chain-of-thought every step (buildable).** A full ~350-token reason-then-act step at about 3.5 Hz, against 1-1.2 Hz in the ECoT paper. The robot says what it's doing and why, live.
 4. **Self-repairing code-as-policies (buildable).** Generate a controller, run it, have a VLM look at the result, fix it: under 2 s per repair loop. Plus parallel monitors (success, safety, grasp points) at about 4 × 5 Hz.
 5. **Physics twin re-fit in seconds (research-risky, biggest upside).** PhysTwin fits a spring-mass model of a deformable (cloth, dough, rope) from video in about 17 min on a GPU. Spring-mass and particle updates are stencil-like, the workload where Cerebras has published **molecular dynamics at 748× Frontier** and stencils at up to 342× an A100. A CSL kernel for this is exactly Hasan's skill set, but it's probably past 16 weeks.
@@ -36,7 +36,7 @@ Fine-tune **Gemma-4-31B or Qwen-3.8-27B** (both image-capable on Cerebras) with 
 
 ## The paper
 
-Nobody has isolated *System-2 speed* as the experimental variable. Run the same robot and tasks with the verifier/planner at 0.5 / 2 / 10 Hz, and plot success rate against inference speed. That's a clean, publishable result that only someone with Cerebras access can produce.
+Nobody has isolated *System-2 speed* as the experimental variable. Run the same robot and tasks with the verifier/planner at 0.5 / 2 / 10 Hz, and plot success rate against inference speed. That's a clean, publishable result, and it's what we'll be using Cerebras for.
 
 ## What to measure first (week 1-2)
 
@@ -44,7 +44,7 @@ Nobody has isolated *System-2 speed* as the experimental variable. Run the same 
 2. The GPU baseline for the same verifier call (to compute the speedup).
 3. Local ACT/SmolVLA inference time on the laptop.
 
-## Ask internally
+## Open questions for Cerebras
 
 Toronto latency and the TTFT floor; dedicated-endpoint access for a student project; custom weights and architectures (a small world model?); prefix caching for repeated camera frames; speculative decoding; rate limits; when CS-4 reaches Montreal; whether a CSL physics kernel could be exposed as an endpoint.
 

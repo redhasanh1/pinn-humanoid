@@ -80,7 +80,7 @@ Robot context: 2x SO-101 arms on a mobile cart, RGB cameras, LeRobot stack. Comp
 - **FOREWARN** uses a latent world model to predict the outcome of each candidate plan, and a VLM aligned to those latents judges them in language ([arXiv](https://arxiv.org/abs/2502.01828)). DynaGuide steers diffusion denoising with an external dynamics model ([survey in arXiv 2511.14178](https://arxiv.org/html/2511.14178v2)).
 - **Diffusion policy latency.** Diffusion Policy with DDIM at 10 steps takes 0.1 s on an RTX 3080 ([arXiv](https://arxiv.org/html/2303.04137v5)). π0.5 with 5 denoising steps takes **76 ms (97 ms with RTC)**. RTC stays robust with **>300 ms** of inference delay (match striking, Ethernet plugging) ([PI](https://www.pi.website/research/real_time_chunking), [LeRobot RTC](https://huggingface.co/docs/lerobot/rtc)).
 - **SmolVLA async inference on SO-100** gives 30% faster response and 2x throughput. The sorting task did 19 vs. 9 cubes in 60 s ([HF blog](https://github.com/huggingface/blog/blob/main/smolvla.md), [LeRobot async](https://huggingface.co/docs/lerobot/async)).
-- **[analysis]** These give the cleanest Cerebras story. The verifier is a VLM/LLM, and Cerebras is fastest at exactly that. The policy stays on the robot and the verifier goes remote. RTC and async already absorb 100–300 ms. Cerebras reports a TTFT of about 170–240 ms on large models ([Cerebras TTFT](https://www.cerebras.ai/glossary/what-is-time-to-first-token), [HPCwire 405B](https://www.hpcwire.com/bigdatawire/this-just-in/cerebras-delivers-record-breaking-performance-with-metas-llama-3-1-405b-model/)). **Caveat:** I found no public Cerebras VLM (image-input) benchmark. Check internally which multimodal models the API serves; image-token prefill may dominate latency.
+- **[analysis]** These give the cleanest Cerebras story. The verifier is a VLM/LLM, and Cerebras is fastest at exactly that. The policy stays on the robot and the verifier goes remote. RTC and async already absorb 100–300 ms. Cerebras reports a TTFT of about 170–240 ms on large models ([Cerebras TTFT](https://www.cerebras.ai/glossary/what-is-time-to-first-token), [HPCwire 405B](https://www.hpcwire.com/bigdatawire/this-just-in/cerebras-delivers-record-breaking-performance-with-metas-llama-3-1-405b-model/)). **Caveat:** I found no public Cerebras VLM (image-input) benchmark. Check with Cerebras which multimodal models the API serves; image-token prefill may dominate latency.
 
 ---
 
@@ -126,7 +126,7 @@ Split assumed: **on-robot GPU** handles cameras, the base policy (ACT/SmolVLA/π
 - **GPU baseline:** 16 s/action on a 4090 ([V-JEPA 2](https://arxiv.org/html/2506.09985v1)); 53 s per plan on an A6000 for DINO-WM ([DINO-WM](https://arxiv.org/pdf/2411.04983)).
 - **Demo.** Zero-reward, image-goal pick-and-place on SO-101. Show the same planner at 16 s/action on the GPU and about 1 s/action remote, then show a longer horizon enabling a two-step task.
 - **Risk.**
-  - Runs a *custom 300M ViT predictor* on Cerebras, not a stock LLM endpoint, so it needs internal model-compile access.
+  - Runs a *custom 300M ViT predictor* on Cerebras, not a stock LLM endpoint, so it needs Cerebras to compile a custom model for it.
   - Needs SO-101 action-conditioned fine-tuning data (tens of hours).
   - Camera placement is sensitive.
   - Fallback: run on your own GPU with Sparse Imagination and fewer samples, then report the projected speedup.

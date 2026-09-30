@@ -6,7 +6,7 @@ Research date: 2026-09-25. Every factual claim has a URL next to it. Anything ma
 
 ## 0. PRIORITY: the "fast wireless/network provider" partnership
 
-**What I found:** I could not find any announcement of Cerebras partnering with a wireless, 5G, Wi-Fi or Starlink provider to deliver low-latency inference. I searched Verizon, T-Mobile, AT&T, Ericsson, Nokia, Cisco, Bell, Rogers, Telus, Akamai, Cloudflare, Lumen, Equinix, Zayo, Starlink, Qualcomm, SoftBank and Vodafone. In the Verizon, AT&T and T-Mobile AI-RAN work, the carriers partner with NVIDIA, Nokia and Ericsson, not Cerebras (https://www.fierce-network.com/wireless/att-t-mobile-and-verizon-plans-diverge-ai-ran, https://technologymagazine.com/news/nine-tech-firms-join-verizon-to-design-bottom-up-6g-for-ai). **Ask Hasan for the name or link.** It may be internal or not yet public.
+**What I found:** I could not find any announcement of Cerebras partnering with a wireless, 5G, Wi-Fi or Starlink provider to deliver low-latency inference. I searched Verizon, T-Mobile, AT&T, Ericsson, Nokia, Cisco, Bell, Rogers, Telus, Akamai, Cloudflare, Lumen, Equinix, Zayo, Starlink, Qualcomm, SoftBank and Vodafone. In the Verizon, AT&T and T-Mobile AI-RAN work, the carriers partner with NVIDIA, Nokia and Ericsson, not Cerebras (https://www.fierce-network.com/wireless/att-t-mobile-and-verizon-plans-diverge-ai-ran, https://technologymagazine.com/news/nine-tech-firms-join-verizon-to-design-bottom-up-6g-for-ai). It may not be public yet.
 
 **Candidates he may mean, most likely first:**
 
@@ -20,7 +20,7 @@ Research date: 2026-09-25. Every factual claim has a URL next to it. Anything ma
 
 **Effect on the robot latency budget (holds whatever the partner turns out to be) [analysis]:**
 - VLA-Perf models the base latency of each network hop like this: Ethernet 0.05–0.1 ms, Wi-Fi 6/7 2.5–3.5 ms, 4G/5G 10–25 ms, cloud 10–100 ms (https://arxiv.org/html/2602.18397v1). **A 5G link is therefore slower than home Wi-Fi plus fibre.** A carrier partnership only helps if it gives a short, on-net path into a nearby Cerebras site (for example MEC or peering).
-- Home Wi-Fi 6 (about 3 ms), plus residential fibre to Montreal (about 8 ms RTT, https://wondernetwork.com/pings/Toronto), plus about 70 ms p50 API TTFB (https://llmlatency.dev/provider/cerebras) comes to **about 80–90 ms before decode starts.** With decode on top, a **5–10 Hz action-chunk loop in the cloud is feasible** and 20 Hz is not, because of the per-request TTFB floor. With persistent connections, cached prompts and a dedicated endpoint, the 70 ms TTFB could plausibly drop to 20–40 ms. At that point **~15–20 Hz becomes plausible**. This needs internal confirmation (see Open Questions).
+- Home Wi-Fi 6 (about 3 ms), plus residential fibre to Montreal (about 8 ms RTT, https://wondernetwork.com/pings/Toronto), plus about 70 ms p50 API TTFB (https://llmlatency.dev/provider/cerebras) comes to **about 80–90 ms before decode starts.** With decode on top, a **5–10 Hz action-chunk loop in the cloud is feasible** and 20 Hz is not, because of the per-request TTFB floor. With persistent connections, cached prompts and a dedicated endpoint, the 70 ms TTFB could plausibly drop to 20–40 ms. At that point **~15–20 Hz becomes plausible**. This needs confirming with Cerebras (see Open Questions).
 
 ---
 
@@ -61,11 +61,11 @@ Research date: 2026-09-25. Every factual claim has a URL next to it. Anything ma
 
 **Regions**
 - **Montreal (Enovum, Cerebras-owned, operational July 2025)** and Oklahoma City (300+ CS-3). Also Santa Clara, Stockton, Dallas and Minneapolis (https://www.cerebras.ai/press-release/cerebras-announces-six-new-ai-datacenters-across-north-america-and-europe-to-deliver-industry-s).
-- The Supernova 2026 transcript summary also lists **Toronto** as a location (https://www.investing.com/news/transcripts/cerebras-at-supernova-2026-speed-becomes-the-new-ai-edge-93CH-4866314). I could not confirm this from a second source, so **ask internally.**
+- The Supernova 2026 transcript summary also lists **Toronto** as a location (https://www.investing.com/news/transcripts/cerebras-at-supernova-2026-speed-becomes-the-new-ai-edge-93CH-4866314). I could not confirm this from a second source, so **ask Cerebras.**
 - Bell Saskatchewan is due H1 2027. Other 2026 capacity is in Finland (Mikkeli, 165 MW) and Europe.
 - The OpenAI deal is 750 MW (https://openai.com/index/cerebras-partnership/).
 
-**Speculative decoding:** I found no public Cerebras doc describing user-facing speculative decoding controls. **[analysis]** Ask internally whether it is used server-side and whether a custom draft model (for example an action-token draft) can be plugged in.
+**Speculative decoding:** I found no public Cerebras doc describing user-facing speculative decoding controls. **[analysis]** Ask Cerebras whether it is used server-side and whether a custom draft model (for example an action-token draft) can be plugged in.
 
 ---
 
@@ -85,7 +85,7 @@ Research date: 2026-09-25. Every factual claim has a URL next to it. Anything ma
   - I found no Cerebras robotics customer, world-model or embodied-AI product announcement.
   - Robotics shows up only as a named *use case*, in the AMD PR and the Gemma 4 blog (URLs above).
   - Cerebras investor Eclipse raised $1.3B for robotics and AI infrastructure. That is adjacent, not a Cerebras product (https://www.bloomberg.com/news/articles/2026-04-07/cerebras-backer-eclipse-raises-1-3-billion-for-robotics-ai-infrastructure).
-  - **[analysis]** The space is open, and that is good for a portfolio or internal-demo story.
+  - **[analysis]** The space is open, and that is good for a showcase demo.
 
 ---
 
@@ -168,7 +168,7 @@ Honest framing first. For **small diffusion or flow VLAs, GPUs are already fast*
 
 ---
 
-## E. Custom models to serve on Cerebras (4-month student plus employee access)
+## E. Custom models we'll run on Cerebras (4-month student project)
 
 Listed in order of realism **[analysis]**:
 
@@ -183,7 +183,7 @@ Listed in order of realism **[analysis]**:
 3. **Distilled autoregressive action model.**
    - A 2–4B VLM with a FAST tokenizer head, trained with LeRobot's π0-FAST recipe on your SO-101 data, served on Cerebras as the cloud System-1 (D1).
    - Riskier: it needs custom-architecture serving (vision tower plus action vocabulary) and a few hundred GPU-hours of training.
-4. **Stretch goal: a wafer-native world model or physics check with CSL.** Hasan's CSL experience plus the MD and stencil results in §B point to a *tiny* on-wafer rigid-body or contact rollout for scoring candidate chunks. That fits the "no museum kernels" rule only if it plugs straight into the D2 verifier. It is probably out of scope for 4 months unless internal tooling exists.
+4. **Stretch goal: a wafer-native world model or physics check with CSL.** Hasan's CSL experience plus the MD and stencil results in §B point to a *tiny* on-wafer rigid-body or contact rollout for scoring candidate chunks. That fits the "no museum kernels" rule only if it plugs straight into the D2 verifier. It is probably out of scope for 4 months unless the tooling for it becomes available.
 
 ---
 
@@ -201,17 +201,17 @@ Listed in order of realism **[analysis]**:
 
 ---
 
-## Open questions to ask internally at Cerebras
+## Open questions for the Cerebras team
 
 1. Is there a Cerebras inference presence in **Toronto** (the Supernova transcript lists one)? What is measured RTT or TTFB from a Toronto residential ISP to Montreal?
 2. What is the **wireless or network partnership** Hasan heard about? What is its name, latency SLA and on-net path, and is it available in Canada? Is Bell AI Fabric the one, and will Bell wireless or fibre customers get peered routes before Sherwood opens in H1 2027?
 3. What is the **TTFB floor** on a warm, dedicated endpoint for a ~600-token prompt with 1–2 images? Can it get under 40 ms?
 4. Is **prompt/KV prefix caching** available (the same system prompt plus instruction every call), and is there a **persistent-connection or streaming-input** mode (websocket, gRPC)?
-5. Can a **custom VLM with LoRA** (Gemma-4-31B or Qwen-3.8-27B) be served on a dedicated endpoint for an internal or employee project? What is the turnaround and cost?
+5. Can a **custom VLM with LoRA** (Gemma-4-31B or Qwen-3.8-27B) be served on a dedicated endpoint for a student research project? What is the turnaround and cost?
 6. Are **custom architectures** supported, such as a VLM with an extended action-token vocabulary (FAST BPE tokens) or a small 2–4B model? What is the per-token latency for a model that small?
 7. Is server-side **speculative decoding** used, and can we supply a draft model? Action tokens are highly predictable.
 8. Are there **rate limits** for about 20–50 small requests/s from one client, and **p99 latency** guarantees?
 9. Is image support for Gemma-4 or Qwen-3.8 moving to GA? Is **multi-frame video** input or a higher image count per request on the roadmap?
-10. Does anyone internally own **robotics or physical-AI** go-to-market (the AMD PR names robotics)? Is there a demo or showcase slot?
-11. For the CSL angle: is there internal tooling to run **non-LLM kernels** (a small physics rollout or world model) next to a served model on the same system for customers?
+10. Does Cerebras have a **robotics or physical-AI** team (the AMD PR names robotics)? Is there a demo or showcase slot?
+11. For the CSL angle: is there tooling to run **non-LLM kernels** (a small physics rollout or world model) next to a served model on the same system for customers?
 12. Will **CS-4** (4,400+ tok/s per user) capacity be in the Montreal region, and when?
