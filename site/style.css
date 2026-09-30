@@ -255,3 +255,9 @@ nav a.active { color: var(--text); font-weight: 600; }
 .result.link { color: var(--text); transition: border-color .15s, transform .15s; }
 .result.link:hover { text-decoration: none; border-color: var(--accent); transform: translateY(-2px); }
 .ai .sec-head .small { font-size: 14px; }
+
+.pinn-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr)); gap: 16px; }
+.pinn-card { margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 12px; display: grid; gap: 8px; align-content: start; }
+.pinn-card canvas { display: block; width: 100%; height: auto; }
+.pinn-card figcaption { font-size: 14px; color: var(--muted); padding: 0 4px 4px; }
+.pinn-card figcaption b { color: var(--text); }

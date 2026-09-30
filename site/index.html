@@ -30,76 +30,105 @@
   <section class="hero hero-xl">
     <p class="eyebrow">PINN Humanoid · open-source robot learning</p>
     <h1>Physics-informed AI that teaches a humanoid to learn.</h1>
-    <p class="lede">Nothing our robot does is hand-coded. Every skill starts as a blank neural network, is practised thousands of times inside a physics simulation, and only then moves onto real motors. Spin the network, flip the physics on, and see what it has learned so far.</p>
+    <p class="lede">Nothing our robot does is hand-coded. Every skill starts as a blank neural network, is practised thousands of times inside a physics simulation, and only then moves onto real motors. Below, every visual runs live: flip the physics on and watch what changes.</p>
     <div class="hero-links"><a class="btn" href="#ai-net">See the AI</a><a class="btn ghost" href="#research">Research</a><a class="btn ghost" href="#robot-top">The robot</a></div>
   </section>
-  <div id="ai-net"></div>
-<section class="ai-block">
-    <div class="sec-head"><h2>A neural network you can walk around</h2><span class="muted small">drag to turn · scroll to zoom</span></div>
+  <section class="ai-block" id="ai-net">
+    <div class="sec-head"><h2>Physics-informed neural networks</h2><span class="muted small">every demo runs live in your browser</span></div>
     <div class="ai-grid">
-      <div class="arm-stage" id="nn3d"><span class="arm-status" id="nn3d-status">Loading the network…</span></div>
+      <div class="panel"><canvas id="pinn-flow" width="640" height="300" aria-label="How a PINN is trained: a network's prediction is scored against the data and against the laws of motion"></canvas></div>
       <div class="ai-copy">
-        <p>Everything the robot knows lives in the <b>connections</b> between these dots. Each line has a number on it, a weight. Learning means nudging millions of those numbers until the right inputs light up the right outputs.</p>
-        <ol class="steps">
-          <li><b>In:</b> what the cameras see, where every joint is, and the instruction ("throw it in the hoop").</li>
-          <li><b>Middle:</b> layers that turn pixels into things like "ball, 1.8 m away, drifting left".</li>
-          <li><b>Out:</b> the next moves for the shoulder, elbow, wrist and every finger.</li>
-        </ol>
-        <p class="muted small">The pulses are one decision flowing through. The real brains we run have about 3 billion connections; this one shows the shape, not the size.</p>
+        <p>A neural network normally learns from examples alone. A <b>physics-informed</b> neural network (PINN) is also scored on whether its answer obeys the laws of physics.</p>
+        <p class="formula">loss = <span class="c-data">data error</span> + λ · <span class="c-phys">physics error</span></p>
+        <p>The physics check runs at thousands of points where no measurement exists, so the network learns the rule behind the data, not only the data.</p>
       </div>
     </div>
   </section>
 
   <section class="ai-block">
-    <div class="sec-head"><h2>Physics-informed neural networks (PINNs)</h2></div>
+    <div class="pinn-cards">
+      <figure class="pinn-card">
+        <canvas id="pinn" width="640" height="340" aria-label="A thrown ball: plain network vs physics-informed network"></canvas>
+        <div class="pinn-bar"><button id="pinn-toggle" aria-pressed="false">Physics: off</button><button id="pinn-noise">New measurements</button></div>
+        <figcaption><b>1. Noisy measurements.</b> Six blurry readings of a thrown ball. Without physics the curve bends to fit every reading. With physics it recovers the true arc.</figcaption>
+      </figure>
+      <figure class="pinn-card">
+        <canvas id="pinn-extrap" width="640" height="340" aria-label="Predicting a swinging arm beyond the measured window"></canvas>
+        <div class="pinn-bar"><button id="extrap-play">Replay</button></div>
+        <figcaption><b>2. Predicting the future.</b> A robot arm swings; only the first 2 seconds are measured. A plain network is lost the moment the data ends. The PINN keeps following the real motion, because it knows how pendulums move.</figcaption>
+      </figure>
+      <figure class="pinn-card">
+        <canvas id="pinn-inverse" width="640" height="340" aria-label="Estimating an unknown drag coefficient from motion"></canvas>
+        <div class="pinn-bar"><button id="inverse-play">Run again</button></div>
+        <figcaption><b>3. Discovering hidden physics.</b> The robot throws an object it has never seen. From the flight alone, the PINN works out its air drag, a number nobody told it, and the predicted path locks onto the real one.</figcaption>
+      </figure>
+      <figure class="pinn-card">
+        <canvas id="pinn-data" width="640" height="340" aria-label="Prediction error against number of measurements, plain network vs PINN"></canvas>
+        <figcaption><b>4. Learning from a handful of examples.</b> Prediction error as more real measurements are added, averaged over hundreds of random trials computed on this page. The physics-informed model is accurate from the first few.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="ai-block">
+    <div class="sec-head"><h2>Why training gets easier</h2><span class="muted small">drag to turn</span></div>
     <div class="ai-grid">
-      <div class="panel">
-        <canvas id="pinn" width="640" height="380" aria-label="A ball's flight: a plain network wiggles through the measured points, a physics-informed one follows the real arc"></canvas>
-        <div class="pinn-bar">
-          <button id="pinn-toggle" aria-pressed="false">Physics loss: off</button>
-          <button id="pinn-noise">New measurements</button>
-        </div>
+      <div>
+        <div class="arm-stage" id="landscape"><span class="arm-status" id="landscape-status">Loading…</span></div>
+        <div class="pinn-bar"><button id="land-toggle" aria-pressed="false">Physics: off</button></div>
       </div>
       <div class="ai-copy">
-        <p>A normal network only learns from examples. Give it six blurry measurements of a thrown ball and it will happily draw a curve that wiggles through all six, and is wrong everywhere in between.</p>
-        <p>A <b>physics-informed</b> network is also marked on whether its answer obeys the laws of motion. Its score has two parts:</p>
-        <p class="formula">loss = <span class="c-data">data error</span> + λ · <span class="c-phys">physics error</span></p>
-        <p class="muted small">physics error = how far the predicted path is from <i>acceleration = gravity + air drag</i>, checked at hundreds of points where there is no measurement at all.</p>
-        <p>Turn the physics loss on and the curve snaps to a real arc. That is the idea the project is named after: the robot needs far fewer examples because physics fills in the gaps, and it can predict where a ball, a cup or its own arm will be before it gets there.</p>
+        <p>Training means rolling downhill on a surface of possible answers until reaching the lowest point.</p>
+        <p>With data alone, that surface is full of dents: many answers fit the few measurements equally well, and training can settle in the wrong one.</p>
+        <p>Adding the physics term smooths it into one clear valley. The only answers that score well are the physically possible ones, so training finds the right one, fast.</p>
+        <p class="muted small">Illustration of the effect on a two-parameter model.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="ai-block">
+    <div class="sec-head"><h2>The network inside</h2><span class="muted small">drag to turn · scroll to zoom</span></div>
+    <div class="ai-grid">
+      <div class="arm-stage" id="nn3d"><span class="arm-status" id="nn3d-status">Loading the network…</span></div>
+      <div class="ai-copy">
+        <p>Everything the robot knows is stored in the connections between these nodes. Each connection holds a number, and learning adjusts millions of them.</p>
+        <ol class="steps">
+          <li><b>In:</b> camera images, joint positions, the instruction.</li>
+          <li><b>Middle:</b> layers that turn pixels into "ball, 1.8 m away, drifting left".</li>
+          <li><b>Out:</b> the next moves for shoulder, elbow, wrist and fingers.</li>
+        </ol>
+        <p class="muted small">The pulses are one decision flowing through. The models we run have about 3 billion connections.</p>
       </div>
     </div>
   </section>
 
   <section class="ai-block">
     <div class="sec-head"><h2>Heavy inference, fast reflexes</h2></div>
-    <p class="lede narrow">A big model is smart but slow; a motor needs a new target every 20 milliseconds. So the robot thinks in layers, like you do: you decide to catch a ball, and your spinal cord handles the last few centimetres.</p>
-    <div class="panel"><canvas id="loops" width="1000" height="300" aria-label="Four control loops running at different speeds"></canvas></div>
+    <div class="panel"><canvas id="loops" width="1000" height="300" aria-label="Four control layers running at different speeds"></canvas></div>
     <div class="layers">
-      <div class="layer"><b>Brain</b><span>A 3-billion-parameter robot model (NVIDIA GR00T N1.7, π0.5) on a cloud GPU. Looks at the cameras, reads the instruction, plans the next 2 seconds. <em>About once a second.</em></span></div>
-      <div class="layer"><b>Checker</b><span>A large vision-language model that watches the plan and catches mistakes mid-move. We'll be using Cerebras's fast inference here. <em>Several times a second.</em></span></div>
-      <div class="layer"><b>Reflex</b><span>Small learned skills on the robot: intercept the ball, cushion the catch, release the throw. <em>50 times a second.</em></span></div>
-      <div class="layer"><b>Motors</b><span>Servos holding each joint where it was told. <em>Every 20 ms.</em></span></div>
+      <div class="layer"><b>Brain</b><span>A 3-billion-parameter robot model (NVIDIA GR00T N1.7, π0.5) on a cloud GPU plans the next 2 seconds. <em>About once a second.</em></span></div>
+      <div class="layer"><b>Checker</b><span>A large vision-language model catches mistakes mid-motion, running on Cerebras inference. <em>Several times a second.</em></span></div>
+      <div class="layer"><b>Reflex</b><span>Learned skills on the robot: intercept, cushion, release. <em>50 times a second.</em></span></div>
+      <div class="layer"><b>Motors</b><span>Servos hold each joint at its target. <em>Every 20 ms.</em></span></div>
     </div>
   </section>
 
   <section class="ai-block">
-    <div class="sec-head"><h2>What it has learned so far</h2><span class="muted small">real runs, in simulation</span></div>
+    <div class="sec-head"><h2>What it has learned</h2><span class="muted small">full physics simulation</span></div>
     <div class="results">
-      <div class="result"><span class="big">0 → swish</span><b>Throwing, from nothing</b><span>Started with random flailing a metre short. Taught only "how close did the ball land", it worked out the whole swing and release itself; its best throw now passes 0.1 cm from the centre of the rim.</span></div>
-      <div class="result"><span class="big">wind + new spots</span><b>Then it had to adapt</b><span>A new spot and gusty wind on every throw. It learned one skill that adjusts: at 90% difficulty (hoop moved up to 36 cm, wind up to 5.4 m/s) its best skill still sank 6 to 7 of every 8.</span></div>
-      <div class="result"><span class="big">25 / 26</span><b>Tasks it had never seen</b><span>A pretrained robot brain running on our cloud GPU link solved 25 of 26 table-top tasks it was never shown, and the humanoid copied its moves in our simulation.</span></div>
-      <div class="result"><span class="big">0.4–0.8 s</span><b>NVIDIA's humanoid brain, live</b><span>GR00T N1.7 answering our simulated robot from a rented GPU: camera frames in, 2 seconds of arm and hand moves out.</span></div>
-      <div class="result"><span class="big">every try saved</span><b>Tens of thousands of practice throws</b><span>Every attempt is logged: where it stood, the wind, the exact arm motion and the result. That log is what the bigger models learn from next.</span></div>
+      <div class="result"><span class="big">0.1 cm</span><b>Throwing, learned from scratch</b><span>From random swings to a best throw 0.1 cm from the centre of the rim, taught only where each ball landed.</span></div>
+      <div class="result"><span class="big">6–7 / 8</span><b>Adapting to wind and position</b><span>A new position and gusty wind on every throw, up to 36 cm offset and 5.4 m/s wind. One learned skill handles all of it.</span></div>
+      <div class="result"><span class="big">25 / 26</span><b>Tasks never seen before</b><span>A robot foundation model solved 25 of 26 unseen tasks through our cloud pipeline, and the humanoid reproduced its motions.</span></div>
+      <div class="result"><span class="big">0.4–0.8 s</span><b>NVIDIA GR00T, live</b><span>Camera frames in, 2 seconds of arm and hand motion out, from a cloud GPU.</span></div>
     </div>
   </section>
 
   <section class="ai-block">
     <div class="sec-head"><h2>Where this is going</h2></div>
     <div class="vision">
-      <p><b>Robots that learn overnight.</b> Leave the simulation running, and the robot wakes up with a skill it didn't have yesterday: tried a hundred thousand times, in wind, from every angle, before it ever touches the real world.</p>
-      <p><b>Physics as a teacher.</b> Physics-informed models let a cheap, 3D-printed robot predict how things will move, so it learns from a handful of real examples instead of millions.</p>
-      <p><b>Thinking at the speed of motion.</b> Most robot brains get one thought a second. With inference fast enough to check its own plan many times a second, a robot can notice a slip mid-grasp and fix it before the cup falls.</p>
-      <p><b>All of it open.</b> Printable parts, the simulations, the training code and the logs, on GitHub for anyone to build on.</p>
+      <p><b>Robots that learn overnight.</b> Skills practised a hundred thousand times in simulation, in wind and from every angle, before they touch the real world.</p>
+      <p><b>Physics as the teacher.</b> Physics-informed models let a low-cost, 3D-printed robot predict how things move, from a handful of real examples.</p>
+      <p><b>Thinking at the speed of motion.</b> Checking its own plan many times a second, a robot can catch a slip mid-grasp and fix it before anything falls.</p>
+      <p><b>Open.</b> Parts, simulations, training code and logs, on GitHub.</p>
     </div>
   </section>
 
