@@ -19,36 +19,37 @@ FOREARM
 WRIST
  8  RW1 wrist rotation base       1h39    Hasan    [DONE]     Oct 2 (gcode with RW1+RW2)
  9  RW2 wrist rotation parts      1h09    Hasan    [DONE]     Oct 2 (same gcode as RW1)
-10  RW3 wrist gears + holder      1h14    Hasan    [DONE]     Oct 2 (gcode with RW3+RE5+RR3)
+10  RW3 wrist gears + holder      1h14    Hasan    [DONE]     Oct 2 (gcode also had 2 more merged plates)
 ELBOW / BICEP
 11  RE1 elbow bicep               4h32    friend   [TODO-F]   run2
 12  RE2 elbow bicep               4h35    friend   [TODO-F]   run2
 13  RE3 elbow bicep               4h13    friend   [TODO-F]   run3
-14  RE4 elbow bicep               2h32    friend   [TODO-F]   run5
-15  RE5 elbow gears               1h07    Hasan    [DONE]     Oct 2 (same gcode as RW3)
+14  RE4 elbow bicep               2h32    Hasan    [TODAY]    Mon Oct 5, PLATE 1 (moved off the friend's run5)
+15  RE5 elbow gears               1h07    Hasan    [ ? ]      probably Oct 2 (in the day-2 plan) - check the bin
 ROTATE
 16  RR1 rotate                    4h16    friend   [TODO-F]   run4
 17  RR2 rotate gears              2h49    friend   [TODO-F]   run5
-18  RR3 rotate                    1h14    Hasan    [DONE]     Oct 2 (same gcode as RW3)
+18  RR3 rotate                    1h14    Hasan    [ ? ]      probably Oct 2 (in the day-2 plan) - check the bin
 SHOULDER
 19  RS1 shoulder                  4h24    friend   [TODO-F]   run3
-20  RS2 shoulder gears            2h48    Hasan    [TODAY]    Mon Oct 5, PLATE B (0.15 mm)
+20  RS2 shoulder gears            2h48    Hasan    [TODAY]    Mon Oct 5, PLATE 2 (0.15 mm)
 21  RS3 shoulder                  4h21    friend   [TODO-F]   run4
-22  RS4 shoulder pot ring         0h10    Hasan    [TODAY]    Mon Oct 5, PLATE A
+22  RS4 shoulder pot ring         0h10    Hasan    [TODAY]    Mon Oct 5, PLATE 1 (tiny, maybe also printed Oct 2)
 OMOPLATE
 23  RO1 omoplate                  4h04    friend   [TODO-F]   run5 (was approved by Sandbox, never printed)
-24  RO2 omoplate                  1h52    Hasan    [TODAY]    Mon Oct 5, PLATE A
+24  RO2 omoplate                  1h52    Hasan    [ ? ]      probably Oct 2 (in the day-2 plan) - check the bin
 
-COUNT: DONE 11 | TODAY 3 | Hasan left after today 0 (all small plates done!) | friend 10
+COUNT: DONE 8 | ? 3 (RE5, RR3, RO2 - likely done Oct 2) | TODAY 3 (RE4, RS2, RS4) | friend 9
 
 -------------------------------------------------------------------------------------------------
 TODAY  Mon Oct 5  -  NEWNHAM 3D Printer #1, whole day 9:45-4:00   (folder: C:\hi\day3_newnham_mon)
-  PLATE A  (print first)   RO2 omoplate + RS4 ring    2h00   62 g   0.20 mm   -> 9:45 to ~11:45
-  PLATE B  (print second)  RS2 shoulder gears         2h47   57 g   0.15 mm   -> done ~2:45
-  Total 4h47. (_old_plans_dont_print = the earlier plates, those parts were already printed Oct 2.)
-  After each plate: mark its parts [DONE] + date above.
+  PLATE 1  (print first)   RE4 elbow (low arm side, servo base, 2 reinforcers) + RS4 ring   2h42   83 g   0.20 mm
+  PLATE 2  (print second)  RS2 shoulder gears                                                2h47   57 g   0.15 mm
+  Total 5h29: 9:45 -> ~12:30 -> ~3:20. Both are parts that were definitely NOT printed yet.
+  (_old_plans_dont_print = earlier plans, ignore.)
 
 NEXT FOR HASAN
-  After today Hasan's 13 small plates are all printed. Only the friend's big runs remain.
+  Check the bin for RE5 (elbow gears), RR3 (RotTit), RO2 (piston base + servo holster).
+  Anything missing goes on the next plate. Then the friend's big runs (RF1 forearm first).
 FRIEND (folder FRIEND_BIG_10h_RUNS)
   run1 RF1 first (forearm), then run2..run5.
