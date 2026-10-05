@@ -1,0 +1,27 @@
+ROBOT PC - the computer the robot talks to (ESP32 over USB)        set up Oct 3 2026
+=====================================================================================
+Access: Tailscale (account hasaniqbal2guy) + SSH key login
+  Tailscale name: robot     IP: (tailnet, local notes)
+  login:  ssh key login over Tailscale (details kept off the repo)
+
+Hardware
+  Windows 11 Pro, Intel i7-7700HQ, 32 GB RAM, 881 GB free on C:
+  GPU: NVIDIA Quadro M1200 4 GB (Maxwell), driver 573.71  -> small training only
+  USB serial devices: none seen on Oct 3 (ESP not plugged in, or needs CH340/CP210x driver)
+
+Installed by Claude (log)
+  Oct 3: OpenSSH (winget Microsoft.OpenSSH.Preview), firewall rule 'sshd-any' port 22, Tailscale
+  Oct 3: Python 3.11, Git, arduino-cli (winget)  - installed OK
+  Oct 3: ESP32 on COM3 (CH340 driver already present). esp32:esp32 core 3.3.12 (1888 MB download)
+         blink sketch ~\blink (LED GPIO2) FLASHED + VERIFIED, serial prints "robot alive, blink N" @115200
+  Oct 4: FIRST SERVO MOVING. MG996R signal from ESP32 pin 13 (ESP32Servo lib, ~\servo13check), power from
+         the big supply at 6 V, ESP32 GND shared with supply -. Signal verified by loopback 13->34:
+         0deg 489us / 90deg 1483us / 180deg 2500us @ 50 Hz.
+         Debug notes: PCA9685 route never moved the servo (board found at 0x40 every time) -> suspect the board's
+         power input / terminal, retest it next. Servo was limp = no power reaching it; check polarity (+6 not -6)
+         at the barrel adapter with the meter, and the ESP32 GND must share the supply's -.
+         Chip: ESP32-D0WD-V3 rev 3.1, 4 MB flash, no PSRAM (WROOM-32E) -> board "ESP32 Dev Module".
+  Oct 4 later: SERVO WORKS THROUGH THE PCA9685 (~\servo_sweep, all 16 channels). Earlier PCA failures were
+         loose jumper wires. Next: 6 servos on ch0-5 (thumb, index, middle, ring, pinky, wrist), 2200uF cap on.
+  Helper scripts in C:\Users\hasan: upload.ps1 (finds port, compiles+uploads ~\blink), serial.ps1 (reads COM3 5 s),
+         prog.ps1 / size.ps1 (core install progress)

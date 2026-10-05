@@ -1,0 +1,58 @@
+InMoov RIGHT ARM (hand -> shoulder) - FINAL PARTS CHECKLIST  (checked Oct 1 2026)
+Spec source: inmoov.fr hardware BOM + hand/forearm, finger starter, bicep, shoulder tutorials
+==================================================================================
+
+SCREWS / BOLTS
+  [OK] 16x M3x20 + nuts      finger hinges            DYWISHKEY kit (Sep 26 order, arriving Tue)
+  [OK] M3x20 countersunk     general (InMoov spec)    DYWISHKEY kit
+  [OK] M4x20 countersunk     forearm / wrist          DYWISHKEY kit
+  [OK] M3x12 wood screws     small servo mounts       METALLIXITY 625 self-tapping (owned)
+  [OK] M4x20 wood screws     big servo mounts         METALLIXITY 625 (owned)
+  [OK] M4x16 (3.5x16 spec)   shoulder servo mount     METALLIXITY 625 (owned)
+  [BUY] 1x M8x40              thumb                    Home Depot
+  [BUY] 1x M8x60              palm -> forearm          Home Depot (returning the 10-set)
+  [BUY] 1x M8x80              palm halves              Home Depot
+  [BUY] 4x M8x100             elbow + shoulder         Home Depot
+  [BUY] 8x M8 nuts            one per M8 bolt          Home Depot
+  [OK] 15x M3x30 + nuts     shoulder                 NOT at Home Depot (stops at M4); DYWISHKEY kit max M3x20
+  [OK] 15x M3x35 + nuts     shoulder                 -> ORDERED Oct 3: GuoYomm M3 30-50mm kit, arriving Oct 4
+
+MECHANICAL
+  [OK] braid for finger tendons, 10x75cm  - BOTH HERCULES orders were CANCELLED (Sep 26 by seller, Sep 27).
+        ORDERED Oct 3: Dingbear 100m 135LB/0.60mm, arriving Oct 4 4-8am
+  [OK] small extension spring  tendon tensioner        Swpeet 150 kit (owned)
+  [OK] PTFE tube               tendon guides           owned
+  [OK] glue (CA / super glue)  PLA parts               Gorilla gel (owned)
+  [OK] 6mm BBs                 shoulder rotation       Oct 1 order (tomorrow)
+  [OK] lubricant               gears                   your light machine oil (no grease bought)
+  [PRINT] servo horns for DS5160 (or buy metal 18T 2-pack ~$17 if a printed one strips)
+  [PRINT] 10 mm spacer under each DS5160 (it is 10 mm shorter than HS-805BB)
+
+SERVOS / ELECTRONICS
+  [OK] 6x MG996R              5 fingers + wrist        owned
+  [OK] 4x DS5160 60kg         bicep/rotate/shoulder/omoplate   owned
+  [OK] 2x ESP32, 2x PCA9685                            owned
+  [OK] 12V 12A adjustable PSU set to 6.0 V, TAPE THE KNOB  (replaces buck converter)
+  [OK] 2200uF capacitor across servo power at PCA9685  owned (arriving Tue)
+  [OK] 18 AWG power wire                               owned
+  [OK] DC barrel -> screw adapters                     owned
+  [OK] 10x 50cm servo leads (mount PCA9685 on bicep)   Sep 29 order (Mon)
+  [OK] jumper wires M-M / M-F / F-F                    FULARR (tomorrow)
+  [OK] breadboard                                      Oct 1 order (Sunday)
+  [OK] sensors: 2x FSR402, 6x AS5600, 5x INA226, ADS1115, TCA9548A, USB camera
+
+RETURNS
+  - buck converter 2-pack (PSU is adjustable)
+  - multimeter (PSU has a display)  - optional, it is handy to keep
+  - M8x60 10-set
+  - RETURNING the 10x 1m servo leads (rcmodel_jy, $24.88). New return request submitted Oct 3 3:2x pm,
+    seller replies by email within 48 h with a label. If no reply by Oct 7 -> A-to-z claim on the order.
+  - KEEP the 10x 50cm Maihuijia leads ($15.99, already here).
+  - BNTECHGO 18AWG 10ft red/black wire (duplicate of MMOBIEL 5m). Return by Nov 2.
+
+FREE (York makerspace)
+  - 2x 10k ohm resistors (fingertip sensors)
+  - soldering station (sensor header pins)
+  - drill for re-drilling finger hinge holes (3 mm outer, 3.2-3.5 mm inner)
+
+STILL TO CONFIRM: Phillips screwdriver, wire stripper at home?

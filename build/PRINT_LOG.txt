@@ -1,0 +1,54 @@
+PINN RIGHT ARM - PRINT TRACKER          (one list, update it after every print)      updated Oct 5 2026
+=================================================================================================
+24 plates total.  Times = real PrusaSlicer times, MK4S HF0.4, 0.20mm SPEED, 30% infill, 4 perimeters.
+
+STATUS KEY:  [DONE] printed and in hand   [TODAY] on the plate for today   [ ? ] not sure, Hasan to confirm
+             [TODO-H] Hasan prints (small)   [TODO-F] friend prints (big, 10 h runs)
+
+ #  PLATE                         TIME    WHO      STATUS     NOTES
+--  ----------------------------  ------  -------  ---------  ----------------------------------------
+HAND
+ 1  RH1 fingers                   2h29    Hasan    [DONE]     index, middle, ring, pinky
+ 2  RH2 thumb, cover, bolts       2h48    Hasan    [DONE]     Oct 1
+ 3  RH3 palm large                2h12    Hasan    [DONE]     Sep 29
+ 4  RH4 palm small + cover        2h04    Hasan    [DONE]     Oct 1
+ 5  RH5 cover top                 1h42    Hasan    [DONE]     Oct 1
+FOREARM
+ 6  RF2 forearm small parts       2h22    Hasan    [DONE]     Oct 1 (cable parts, pulleys, tensioner)
+ 7  RF1 forearm shells           10h53    friend   [TODO-F]   run1 - PRIORITY, finger servos live in here
+WRIST
+ 8  RW1 wrist rotation base       1h39    Hasan    [TODAY]    Mon Oct 5, PLATE 1
+ 9  RW2 wrist rotation parts      1h09    Hasan    [TODAY]    Mon Oct 5, PLATE 1
+10  RW3 wrist gears + holder      1h14    Hasan    [TODAY]    Mon Oct 5, PLATE 2 (0.15 mm)
+ELBOW / BICEP
+11  RE1 elbow bicep               4h32    friend   [TODO-F]   run2
+12  RE2 elbow bicep               4h35    friend   [TODO-F]   run2
+13  RE3 elbow bicep               4h13    friend   [TODO-F]   run3
+14  RE4 elbow bicep               2h32    friend   [TODO-F]   run5
+15  RE5 elbow gears               1h07    Hasan    [TODAY]    Mon Oct 5, PLATE 2 (0.15 mm)
+ROTATE
+16  RR1 rotate                    4h16    friend   [TODO-F]   run4
+17  RR2 rotate gears              2h49    friend   [TODO-F]   run5
+18  RR3 rotate                    1h14    Hasan    [TODO-H]
+SHOULDER
+19  RS1 shoulder                  4h24    friend   [TODO-F]   run3
+20  RS2 shoulder gears            2h48    Hasan    [TODO-H]   needs a 3h block
+21  RS3 shoulder                  4h21    friend   [TODO-F]   run4
+22  RS4 shoulder pot ring         0h10    Hasan    [TODAY]    Mon Oct 5, PLATE 1
+OMOPLATE
+23  RO1 omoplate                  4h04    friend   [TODO-F]   run5 (was approved by Sandbox, never printed)
+24  RO2 omoplate                  1h52    Hasan    [TODO-H]
+
+COUNT: DONE 6 | TODAY 5 | Hasan left after today 3 (RR3, RS2, RO2) | friend 10
+
+-------------------------------------------------------------------------------------------------
+TODAY  Mon Oct 5  -  NEWNHAM 3D Printer #1, whole day 9:45-4:00   (folder: C:\hi\day3_newnham_mon)
+  PLATE 1  (print first)   RW1 + RW2 + RS4          2h57   84 g   0.20 mm   -> start 9:45, done ~12:45
+  PLATE 2  (print second)  RW3 + RE5 gears          2h22   41 g   0.15 mm   -> done ~3:15
+  Total 5h19. Each plate folder: .3mf (review form / slicer) + .gcode (USB stick, ready for the MK4S HF0.4).
+  After each plate: mark its parts [DONE] + date above.
+
+NEXT FOR HASAN (York, Tue-Fri 8:30-4:30)
+  RR3 1h14  +  RO2 1h52  (one day, 3h06)   ->   RS2 2h48 (own day)
+FRIEND (folder FRIEND_BIG_10h_RUNS)
+  run1 RF1 first (forearm), then run2..run5.

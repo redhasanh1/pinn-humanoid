@@ -1,0 +1,17 @@
+HOME DEPOT DUFFERIN (2375 Steeles Ave W) - InMoov right arm bolts
+Checked live on homedepot.ca Oct 1 2026, all in stock at Dufferin. Total ~$13 + tax.
+Page for friend: https://claude.ai/artifact/ULeKZe61WK8p4NzFnwDd5S
+
+  1 x M8-1.25 x 40mm hex cap screw          SKU 1000135048  ~$1.10  thumb
+  1 x M8-1.25 x 60mm hex cap screw          SKU 1000135095  $1.59   palm -> forearm
+  2 x M8-1.25 nylon insert stop nut         SKU 1000128541  $0.66
+  2 x 5/16 x 3-1/2in hex cap screw, Gr 5    SKU 1000125259  $1.77   palm halves (80mm spec) + shoulder (90mm spec)
+  2 x 5/16 x 4in hex cap screw, Gr 5        SKU 1000125280  $1.98   elbow (100mm spec) + spare
+  4 x 5/16-18 nylon insert stop nut         SKU 1000131539  $0.41
+
+Why 5/16": Home Depot / RONA / Canadian Tire stop at M8 x 70. 5/16" = 7.9mm, fits the 8mm holes.
+3-1/2" = 89mm, 4" = 102mm. 5/16 nuts only fit 5/16 bolts, M8 nuts only fit M8 bolts.
+
+AMAZON (in cart Oct 1): 400pc M3 x 30/35/40/45/50 flat head kit w/ nuts, $16.99, arrives Oct 2.
+
+ALREADY HAVE: M3x20 + nuts (finger hinges, DYWISHKEY), M4x20, servo wood screws, 6mm BBs.
