@@ -1,4 +1,4 @@
-PINN RIGHT ARM - PRINT TRACKER          (one list, update it after every print)      updated Oct 5 2026
+﻿PINN RIGHT ARM - PRINT TRACKER          (one list, update it after every print)      updated Oct 6 2026
 =================================================================================================
 24 plates total.  Times = real PrusaSlicer times, MK4S HF0.4, 0.20mm SPEED, 30% infill, 4 perimeters.
 
@@ -19,27 +19,27 @@ FOREARM
 WRIST
  8  RW1 wrist rotation base       1h39    Hasan    [DONE]     Oct 2 (gcode with RW1+RW2)
  9  RW2 wrist rotation parts      1h09    Hasan    [DONE]     Oct 2 (same gcode as RW1)
-10  RW3 wrist gears + holder      1h14    Hasan    [DONE]     Oct 2 (gcode also had 2 more merged plates)
+10  RW3 wrist gears + holder      1h14    Hasan    [DONE]     Oct 2 York (same gcode had RO2 + RR3)
 ELBOW / BICEP
 11  RE1 elbow bicep               4h32    friend   [TODO-F]   run2
 12  RE2 elbow bicep               4h35    friend   [TODO-F]   run2
 13  RE3 elbow bicep               4h13    friend   [TODO-F]   run3
-14  RE4 elbow bicep               2h32    Hasan    [TODAY]    Mon Oct 5, PLATE 1 (moved off the friend's run5)
-15  RE5 elbow gears               1h07    Hasan    [ ? ]      probably Oct 2 (in the day-2 plan) - check the bin
+14  RE4 elbow bicep               2h32    Hasan    [ ? ]      Mon Oct 5 Newnham PLATE 1 - confirm printed
+15  RE5 elbow gears               1h11    Hasan    [DONE]     Oct 6 York (PLATE 6)
 ROTATE
 16  RR1 rotate                    4h16    friend   [TODO-F]   run4
 17  RR2 rotate gears              2h49    friend   [TODO-F]   run5
-18  RR3 rotate                    1h14    Hasan    [ ? ]      probably Oct 2 (in the day-2 plan) - check the bin
+18  RR3 rotate                    1h14    Hasan    [DONE]     Oct 2 York + printed again Oct 6 (PLATE 5) = 1 spare
 SHOULDER
 19  RS1 shoulder                  4h24    friend   [TODO-F]   run3
-20  RS2 shoulder gears            2h48    Hasan    [TODAY]    Mon Oct 5, PLATE 2 (0.15 mm)
+20  RS2 shoulder gears            2h48    Hasan    [ ? ]      Mon Oct 5 Newnham PLATE 2 - confirm printed
 21  RS3 shoulder                  4h21    friend   [TODO-F]   run4
-22  RS4 shoulder pot ring         0h10    Hasan    [TODAY]    Mon Oct 5, PLATE 1 (tiny, maybe also printed Oct 2)
+22  RS4 shoulder pot ring         0h10    Hasan    [ ? ]      Mon Oct 5 Newnham PLATE 1 - confirm printed
 OMOPLATE
-23  RO1 omoplate                  4h04    friend   [TODO-F]   run5 (was approved by Sandbox, never printed)
-24  RO2 omoplate                  1h52    Hasan    [ ? ]      probably Oct 2 (in the day-2 plan) - check the bin
+23  RO1 omoplate                  4h04    friend   [TODO-F]   run5 (in the friend's zip)
+24  RO2 omoplate                  1h52    Hasan    [DONE]     Oct 2 York (object 30.8 mm tall in the Oct 2 gcode), Hasan has it
 
-COUNT: DONE 8 | ? 3 (RE5, RR3, RO2 - likely done Oct 2) | TODAY 3 (RE4, RS2, RS4) | friend 9
+COUNT: DONE 12 (hand x5, RF2, wrist x3, RO2, RR3, RE5) | Monday Newnham plates RE4 / RS2 / RS4 - status to confirm | friend 9 (big zip: RF1, RE1, RE2, RE3, RS1, RS3, RR1, RO1, RR2)
 
 -------------------------------------------------------------------------------------------------
 TODAY  Mon Oct 5  -  NEWNHAM 3D Printer #1, whole day 9:45-4:00   (folder: C:\hi\day3_newnham_mon)
@@ -48,8 +48,15 @@ TODAY  Mon Oct 5  -  NEWNHAM 3D Printer #1, whole day 9:45-4:00   (folder: C:\hi
   Total 5h29: 9:45 -> ~12:30 -> ~3:20. Both are parts that were definitely NOT printed yet.
   (_old_plans_dont_print = earlier plans, ignore.)
 
+BOOKED Tue Oct 6 - YORK 3D Printer #1: 9:45, 10:45, 11:45, 1:15, 2:15 (5-booking/day max; 8:45 was taken).
+  Status: PENDING library approval (email to hiqbal7@myseneca.ca). Form: 'For another reason' - capstone, 4 h, file approved = NO.
+  folder C:\hi\day4_Oct6_SenecaYork (all 40% infill):
+    PLATE 4  RO2 - SKIP, already printed Oct 2
+    PLATE 5  RR3 rotate - PRINTED Oct 6 (spare, it was also in the Oct 2 print)
+    PLATE 6  RE5 elbow gears - PRINTED Oct 6
+
 NEXT FOR HASAN
-  Check the bin for RE5 (elbow gears), RR3 (RotTit), RO2 (piston base + servo holster).
   Anything missing goes on the next plate. Then the friend's big runs (RF1 forearm first).
 FRIEND (folder FRIEND_BIG_10h_RUNS)
   run1 RF1 first (forearm), then run2..run5.
+
